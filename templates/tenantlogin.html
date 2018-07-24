@@ -1,0 +1,34 @@
+<!--This is the login page -->
+{% extends 'layout.html' %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+<form method="POST" action="/tenantlogin">
+	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>Login</h1>
+			</div>
+				<div class="login-form">
+				
+
+				<div class=form-group>{{ form.email.label }}: {{ form.email() }}</div>
+    			<div class=form-group>{{ form.password.label }}: {{ form.password() }}</div>
+    			<div class="form-group">
+				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+				</div>
+
+				
+				<div class="clear"></div> 
+			  	</div> 
+
+		</div>
+	</div>	
+</form>
+<div>
+	<h1> No Account? Sign up</h1><a href="/tenantsignup"><button>here</button></a>
+</div>
+
+{% endblock %}

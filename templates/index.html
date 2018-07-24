@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="top-part row">
+    <div class="col-md-12 homepage-image">
+    	 <div class="jumbotron text-center jumbosparent">
+	   <h1>Cloud-Based Tenant Management System</h1>
+	       <p class="lead"> 
+		      <p class="descript">
+		      </p>
+	       </p>
+	   <div class="button-hover">
+
+        <a href="/managerlogin"><button class="button-success">Tenant Manager</button></a>
+        <a href="/tenantlogin"><button class="button-success">Tenant</button></a>
+
+		<!-- <a href="{{url_for('managerLogin')}}"><button class="button-success">Tenant Manager</button></a> -->
+		<!-- <a href="{{url_for('tenantLogin')}}"><button class="button-success">Tenant</button></a> -->
+
+	   </div>
+    </div>
+    <div class="home-footer text-white">
+    	<ul class="list-unstyled list-inline social">
+                            <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-facebook"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-twitter"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void();"><i class="fa fa-google-plus"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void();" target="_blank"><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+    	<p class="h6">Copyright © All Rights Reserved.<a class="text-green ml-2" href="#" target="_blank">Grace Murigi 2018</a></p>
+    </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
