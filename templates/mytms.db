@@ -1,0 +1,333 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jul 24, 2018 at 02:40 PM
+-- Server version: 10.1.33-MariaDB
+-- PHP Version: 7.2.6
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `mytms`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bills`
+--
+
+CREATE TABLE `bills` (
+  `bill_id` int(11) NOT NULL,
+  `unit_id` varchar(255) NOT NULL,
+  `rent` decimal(10,2) NOT NULL,
+  `service_charge` decimal(10,2) NOT NULL,
+  `due_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bill_payment`
+--
+
+CREATE TABLE `bill_payment` (
+  `id` int(11) NOT NULL,
+  `bill_id` int(11) NOT NULL,
+  `date_paid` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `completed_maintenance`
+--
+
+CREATE TABLE `completed_maintenance` (
+  `id` int(11) NOT NULL,
+  `mt_id` int(11) NOT NULL,
+  `date_fulfilled` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `maintenance`
+--
+
+CREATE TABLE `maintenance` (
+  `mt_id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `ten_id` int(11) NOT NULL,
+  `request_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `occupant`
+--
+
+CREATE TABLE `occupant` (
+  `id` int(11) NOT NULL,
+  `unit_id` varchar(255) NOT NULL,
+  `ten_id` int(11) NOT NULL,
+  `rental_date` date DEFAULT NULL,
+  `vacate_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rental_properties`
+--
+
+CREATE TABLE `rental_properties` (
+  `ren_id` int(11) NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `units` int(11) NOT NULL,
+  `manager_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tenant`
+--
+
+CREATE TABLE `tenant` (
+  `ten_id` int(11) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `last_name` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone_number` int(20) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `signup_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tenant`
+--
+
+INSERT INTO `tenant` (`ten_id`, `first_name`, `last_name`, `email`, `phone_number`, `password`, `signup_date`) VALUES
+(1, 'Fridah ', 'Kanini ', 'kaninifridah436@gmail.com', 725410486, '$5$rounds=535000$4/lgF9GFe6eABih2$/9VkE8mVqKciBr5R4vOS7fDIYRK8kek8.t8M7iWQZQ1', '2018-07-22 08:41:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tenant_manager`
+--
+
+CREATE TABLE `tenant_manager` (
+  `mgr_id` int(11) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `last_name` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone_number` int(20) NOT NULL,
+  `company` varchar(50) DEFAULT NULL,
+  `password` varchar(100) NOT NULL,
+  `signup_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tenant_manager`
+--
+
+INSERT INTO `tenant_manager` (`mgr_id`, `first_name`, `last_name`, `email`, `phone_number`, `company`, `password`, `signup_date`) VALUES
+(1, 'Grace', 'Murigi', 'gracemurigi95@gmail.com', 729695435, 'Kenli Agencies', '$5$rounds=535000$KtjppZcwEdlb9PWk$CNLT7djK5CDcZz94Ms3R3ZMiVLWdXVhWc5sZ/9sCnB9', '2018-07-22 08:36:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `unit`
+--
+
+CREATE TABLE `unit` (
+  `unit_id` varchar(255) NOT NULL,
+  `ren_id` int(11) NOT NULL,
+  `features` varchar(255) NOT NULL,
+  `vacant` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `bills`
+--
+ALTER TABLE `bills`
+  ADD PRIMARY KEY (`bill_id`),
+  ADD KEY `unit_FK` (`unit_id`);
+
+--
+-- Indexes for table `bill_payment`
+--
+ALTER TABLE `bill_payment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bill_FK` (`bill_id`);
+
+--
+-- Indexes for table `completed_maintenance`
+--
+ALTER TABLE `completed_maintenance`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `maintenance_FK` (`mt_id`);
+
+--
+-- Indexes for table `maintenance`
+--
+ALTER TABLE `maintenance`
+  ADD PRIMARY KEY (`mt_id`),
+  ADD KEY `requester_FK` (`ten_id`);
+
+--
+-- Indexes for table `occupant`
+--
+ALTER TABLE `occupant`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rentedunit_FK` (`unit_id`),
+  ADD KEY `renter_FK` (`ten_id`);
+
+--
+-- Indexes for table `rental_properties`
+--
+ALTER TABLE `rental_properties`
+  ADD PRIMARY KEY (`ren_id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD KEY `manager_FK` (`manager_id`);
+
+--
+-- Indexes for table `tenant`
+--
+ALTER TABLE `tenant`
+  ADD PRIMARY KEY (`ten_id`);
+
+--
+-- Indexes for table `tenant_manager`
+--
+ALTER TABLE `tenant_manager`
+  ADD PRIMARY KEY (`mgr_id`);
+
+--
+-- Indexes for table `unit`
+--
+ALTER TABLE `unit`
+  ADD PRIMARY KEY (`unit_id`),
+  ADD KEY `rental_FK` (`ren_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `bills`
+--
+ALTER TABLE `bills`
+  MODIFY `bill_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bill_payment`
+--
+ALTER TABLE `bill_payment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `completed_maintenance`
+--
+ALTER TABLE `completed_maintenance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `maintenance`
+--
+ALTER TABLE `maintenance`
+  MODIFY `mt_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `occupant`
+--
+ALTER TABLE `occupant`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `rental_properties`
+--
+ALTER TABLE `rental_properties`
+  MODIFY `ren_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tenant`
+--
+ALTER TABLE `tenant`
+  MODIFY `ten_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tenant_manager`
+--
+ALTER TABLE `tenant_manager`
+  MODIFY `mgr_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `bills`
+--
+ALTER TABLE `bills`
+  ADD CONSTRAINT `unit_FK` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`unit_id`);
+
+--
+-- Constraints for table `bill_payment`
+--
+ALTER TABLE `bill_payment`
+  ADD CONSTRAINT `bill_FK` FOREIGN KEY (`bill_id`) REFERENCES `bills` (`bill_id`);
+
+--
+-- Constraints for table `completed_maintenance`
+--
+ALTER TABLE `completed_maintenance`
+  ADD CONSTRAINT `maintenance_FK` FOREIGN KEY (`mt_id`) REFERENCES `maintenance` (`mt_id`);
+
+--
+-- Constraints for table `maintenance`
+--
+ALTER TABLE `maintenance`
+  ADD CONSTRAINT `requester_FK` FOREIGN KEY (`ten_id`) REFERENCES `tenant` (`ten_id`);
+
+--
+-- Constraints for table `occupant`
+--
+ALTER TABLE `occupant`
+  ADD CONSTRAINT `rentedunit_FK` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`unit_id`),
+  ADD CONSTRAINT `renter_FK` FOREIGN KEY (`ten_id`) REFERENCES `tenant` (`ten_id`);
+
+--
+-- Constraints for table `rental_properties`
+--
+ALTER TABLE `rental_properties`
+  ADD CONSTRAINT `manager_FK` FOREIGN KEY (`manager_id`) REFERENCES `tenant_manager` (`mgr_id`);
+
+--
+-- Constraints for table `unit`
+--
+ALTER TABLE `unit`
+  ADD CONSTRAINT `rental_FK` FOREIGN KEY (`ren_id`) REFERENCES `rental_properties` (`ren_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
