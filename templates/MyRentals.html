@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8">
+			<table>
+				<tbody>
+
+
+                <tr>
+              <th>Serial</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Action</th>
+
+{% if data %}
+          </tr>
+				  {% for rows in data %}
+				    <tr>
+				      <td>{{rows['name']}}</td>
+				      <td>{{rows.3}}</td>
+				    </tr>
+				  {% endfor %}
+				  there must be some data somewhere
+
+{% endif %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+{% endblock%}

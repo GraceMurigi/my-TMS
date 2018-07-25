@@ -44,7 +44,17 @@ class maintenaceForm(Form):
 	description = TextAreaField ('Description:',[validators.Length(min=1, max= 200),
 		validators.DataRequired()])
 	
+class rentalsForm(Form):
+	address = TextAreaField('Address', [validators.Length(min=1, max= 200),
+		validators.DataRequired()])
+	name = StringField('Property name', [validators.Length(min=1, max=50),
+		validators.DataRequired()])
+	units = StringField('Units', [validators.Length(min=1, max=50),
+		validators.DataRequired()])
 	
+
+
+
 
 
 

@@ -3,7 +3,7 @@
 {% block body %}
 
 {% from "includes/_formhelpers.html" import render_field %}
-<form method="POST">
+<form method="POST" action="/rentalsform">
 
 	<div class="rentals">
 		<div class="rentals-screen">
@@ -19,16 +19,14 @@
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.purpose, class_="form_control")}}
+				{{render_field(form.name, class_="form_control")}}
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.description, class_="form_control")}}
+				{{render_field(form.units, class_="form_control")}}
 			</div>
 
-			<div class="form-group">
-				{{render_field(form.landlord, class_="form_control")}}
-			</div>
+			
 			
 				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
 		</div>
