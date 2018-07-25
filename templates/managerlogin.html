@@ -5,12 +5,16 @@
 
 {% from "includes/_formhelpers.html" import render_field %}
 
-<form method="POST" action="/managerlogin">
-	<div class="login">
-		<div class="login-screen">
-			<div class="app-title">
-				<h1>Login</h1>
-			</div>
+<h4 class="welcome-login">
+	Tenant Manager Login form
+</h4>
+<div class="login-form">
+	<form method="POST" action="/managerlogin">
+		<div class="login">
+			<div class="login-screen">
+				<div class="app-title">
+					<h1>Login</h1>
+				</div>
 				<div class="login-form">
 				
 
@@ -25,9 +29,10 @@
 
 
 		</div>
-	</div>	                                                                       
-</form>
-<div>
+		                                                                       
+	</form>
+</div>
+<div class="sign-up">
 	<h1> No Account? Sign up</h1><a href="/managersignup"><button>here</button></a>
 </div>
 

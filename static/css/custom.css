@@ -88,14 +88,24 @@ body{
         padding-left: 30px;
 }
 .submit{
-width: 20% !important;
-margin-right: 100px !important;
+width: 200px !important;
 }
 .clear{
 	clear: both;
 	margin:20px auto;
 }
-
+.sign-up h1{
+  color: #03ffed;
+text-align: center;
+font-size: 20px;
+}
+.sign-up a{
+  text-align: center;
+display: block
+}
+input.submit{
+  cursor: pointer;
+}
 }
 .login{
 		
@@ -103,17 +113,12 @@ margin-right: 100px !important;
 }
 
 .login-screen {
-	background-color: rgba(114, 120, 14, 0.44);
+	background-color: rgba(255, 255,255, 1);
     width: 40%;
     margin: 20px auto;
-    border-radius: 24px;
+    border-radius: 4px;
     padding: 30px;
-        padding-top: 30px;
-        padding-right: 30px;
-        padding-bottom: 30px;
-        padding-left: 30px;
-    height: 298px;
-    padding-left: 0px;
+    text-align: center;
 
 }
 *, ::after, ::before {
@@ -129,19 +134,22 @@ color: #110c0c;
  
 .login-form {
 text-align: center;
+
 }
 
 .form-group {
-margin-bottom: 10px;
+
+}
+.form-group label, .form-group input{
+	display: inline-block;
+  margin: 10px;
 }
 .form-group label{
-	margin-left: 45px;
+
 }
 .form-group input, .form-group select{
-	margin-right: 30px;
 	float: right;
-	border-radius: 4px;
-	width: 50%;
+  width: 240px;
 }
 .drop{
 	display: block;
@@ -750,4 +758,16 @@ cursor: pointer;
 .home-footer{
   position: inherit;
   bottom: 40px;
+}
+.welcome-login{
+color: rgb(3, 255, 237);
+text-align: center;
+border: 2px solid rgba(3, 255, 237, 0.5);
+    
+border-bottom-width: 1px;
+border-bottom: none;
+padding: 11px;
+border-radius: 4px;
+width: 42%;
+margin: -20px auto;;
 }

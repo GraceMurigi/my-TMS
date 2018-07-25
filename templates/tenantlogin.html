@@ -4,30 +4,36 @@
 {% block body %}
 
 {% from "includes/_formhelpers.html" import render_field %}
-
-<form method="POST" action="/tenantlogin">
-	<div class="login">
-		<div class="login-screen">
-			<div class="app-title">
-				<h1>Login</h1>
-			</div>
-				<div class="login-form">
-				
-
-				<div class=form-group>{{ form.email.label }}: {{ form.email() }}</div>
-    			<div class=form-group>{{ form.password.label }}: {{ form.password() }}</div>
-    			<div class="form-group">
-				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+<h4 class="welcome-login">
+	Tenant Login form
+</h4>
+<div class="login-form">
+		
+	<form method="POST" action="/tenantlogin">
+		<div class="login">
+			<div class="login-screen">
+				<div class="app-title">
+					<h1>Login</h1>
 				</div>
+					<div class="login-form">
+					
 
-				
-				<div class="clear"></div> 
-			  	</div> 
+					<div class=form-group>{{ form.email.label }}: {{ form.email() }}</div>
+	    			<div class=form-group>{{ form.password.label }}: {{ form.password() }}</div>
+	    			<div class="form-group">
+					<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+					</div>
 
-		</div>
-	</div>	
-</form>
-<div>
+					
+					<div class="clear"></div> 
+				  	</div> 
+
+			</div>
+		</div>	
+	</form>
+
+</div>
+<div class="sign-up">
 	<h1> No Account? Sign up</h1><a href="/tenantsignup"><button>here</button></a>
 </div>
 

@@ -41,20 +41,25 @@ def managerSignup():
 		password = sha256_crypt.encrypt(str(form.password.data))
 
 
+		try:
+			#create cursor
+			cur = mysql.connection.cursor()
+
+			# Execute query
+			cur.execute("INSERT INTO tenant_manager (first_name, last_name, email, phone_number, company, password)VALUES (%s, %s, %s, %s, %s, %s)",(
+				first_name, last_name, email, phone_number, company, password))
 		
-		#create cursor
-		cur = mysql.connection.cursor()
 
-		# Execute query
-		cur.execute("INSERT INTO tenant_manager (first_name, last_name, email, phone_number, company, password)VALUES (%s, %s, %s, %s, %s, %s)",(
-			first_name, last_name, email, phone_number, company, password))
-	
-
-		#commit to the database
-		mysql.connection.commit()
-
-		#close connection
-		cur.close()
+			#commit to the database
+			mysql.connection.commit()
+			
+		except Exception as e:
+			flash( 'Seems there was an error: {}', format(e))
+			return render_template('RMProfile.html', form = form)
+			
+		finally:
+			#close connection
+			cur.close()
 
 		flash("Signup successful!", "success")
 		return redirect(url_for('managerLogin'))
