@@ -51,8 +51,12 @@ class rentalsForm(Form):
 		validators.DataRequired()])
 	units = StringField('Units', [validators.Length(min=1, max=50),
 		validators.DataRequired()])
-	
 
+
+class unitsForm(Form):
+	pass
+	
+	
 
 
 

@@ -6,23 +6,24 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8">
-			<table>
+			<table class="table table-striped" style="color: #fff;">
 				<tbody>
 
 
                 <tr>
-              <th>Serial</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Action</th>
+              <th>Property ID</th>
+              <th>Property address</th>
+              <th>Property name</th>
+              <th>Number of units</th>
 
 {% if data %}
           </tr>
 				  {% for rows in data %}
 				    <tr>
-				      <td>{{rows['name']}}</td>
-				      <td>{{rows.3}}</td>
+				    	<td>{{rows['ren_id']}}</td>
+				    	<td>{{rows['address']}}</td>
+				      	<td>{{rows['name']}}</td>
+				      	<td>{{rows['units']}}</td>
 				    </tr>
 				  {% endfor %}
 				  there must be some data somewhere
