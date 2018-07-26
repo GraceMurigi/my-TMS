@@ -43,19 +43,10 @@
             </li>
           
 
-          {% if session['T'] %}
+          
+           {% if session['logged_in'] %}
           <li class="nav-item"> 
-            <a class="nav-link" href="{{url_for('Tenant')}}">Dashboard   <span class="sr-only"></span></a>
-          </li>
-          {% endif %}
-           {% if session['RM'] %}
-          <li class="nav-item"> 
-            <a class="nav-link" href="{{url_for('RentalManager')}}">Dashboard   <span class="sr-only"></span></a>
-          </li>
-          {% endif %}
-           {% if session['Admin'] %}
-          <li class="nav-item"> 
-            <a class="nav-link" href="{{url_for('Admin')}}">Dashboard   <span class="sr-only"></span></a>
+            <a class="nav-link" href="{{url_for('Dashboard')}}">Dashboard   <span class="sr-only"></span></a>
           </li>
           {% endif %}
           
@@ -81,6 +72,7 @@
           {% endif %}
         </ul>
       </div>
+    </div>
 
 </nav>
 
