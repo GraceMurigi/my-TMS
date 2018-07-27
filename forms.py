@@ -31,12 +31,16 @@ class tenantSignupForm(Form):
 	confirm = PasswordField('Confirm Password:')
 
 class managerLoginForm(Form):
-	email = StringField('Email')
-	password = PasswordField('Password')
+	email = StringField('Email',[validators.Email(), validators.DataRequired()])
+	password = PasswordField('Password', [validators.DataRequired()])
+
+
+	
 
 class tenantloginForm(Form):
-	email = StringField('Email')
-	password = PasswordField('Password')
+	email = StringField('Email',[validators.Email(), validators.DataRequired()])
+	password = PasswordField('Password', [validators.DataRequired()])
+
 
 #maintenace form 
 class maintenaceForm(Form):
@@ -44,6 +48,7 @@ class maintenaceForm(Form):
 	description = TextAreaField ('Description:',[validators.Length(min=1, max= 200),
 		validators.DataRequired()])
 	
+
 class rentalsForm(Form):
 	address = TextAreaField('Address', [validators.Length(min=1, max= 200),
 		validators.DataRequired()])
@@ -57,9 +62,5 @@ class unitsForm(Form):
 	pass
 	
 	
-
-
-
-
 
 

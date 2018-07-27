@@ -22,7 +22,11 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
 #home page 
+
 @app.route('/')
+def home():
+	return render_template ("index.html")
+@app.route('/home')
 def index():
 	return render_template ("home.html")
 
@@ -39,20 +43,26 @@ def managerSignup():
 		password = sha256_crypt.encrypt(str(form.password.data))
 
 
+		try:
+			#create cursor
+			cur = mysql.connection.cursor()
+
+			# Execute query
+			cur.execute("INSERT INTO tenant_manager (first_name, last_name, email, phone_number, company, password)VALUES (%s, %s, %s, %s, %s, %s)",(
+				first_name, last_name, email, phone_number, company, password))
 		
-		#create cursor
-		cur = mysql.connection.cursor()
 
-		# Execute query
-		cur.execute("INSERT INTO tenant_manager (first_name, last_name, email, phone_number, company, password)VALUES (%s, %s, %s, %s, %s, %s)",(
-			first_name, last_name, email, phone_number, company, password))
-	
+			#commit to the database
+			mysql.connection.commit()
+			
+		except Exception as e:
+			flash( 'Seems there was an error: {}', format(e))
+			return render_template('RMProfile.html', form = form)
+			
+		finally:
+			#close connection
+			cur.close()
 
-		#commit to the database
-		mysql.connection.commit()
-
-		#close connection
-		cur.close()
 
 		flash("Signup successful!", "success")
 		return redirect(url_for('managerLogin'))
@@ -85,7 +95,8 @@ def tenantSignup():
 		#close connection
 		cur.close()
 
-		flash("Signup successful!", "success")
+
+		flash("Sign successful!", "success")
 		return redirect(url_for('tenantLogin'))
 	return render_template('tenantsignup.html', form=form)
 
@@ -202,6 +213,7 @@ def logout ():
 	session.clear()
 	flash('You are now logged out','danger')
 	return redirect(url_for('index'))
+
 # Dashboard route
 @app.route('/Dashboard')
 def Dashboard():
@@ -214,29 +226,11 @@ def Dashboard():
 	else:
 		flash('Sorry, you need to log in first', 'warning')
 		return redirect(url_for('login'))
-# Rental Manager dashboard
-@app.route('/rentalmanager')
-def RentalManager():
-	#if session.get('RM'):
-		return render_template('RMdashboard.html')
-	#flash("You are not logged in as a RentalManager",'danger')
-	#return redirect(url_for('login'))
-
-#Tenant manager dashboard 
-@app.route('/tenant')
-def Tenant():
-	#if session.get('T'):
-		return render_template('Tdashboard.html')
-	#flash("You should logged in as a Tenant to access this dashboard",'danger')
-	#return redirect(url_for('login'))
-
-#Admin dashboard 
-@app.route('/admin')
-def Admin():
-	if session.get('Admin'):
-		return render_template('admindashboard.html')
-	flash("You are not logged in as a site Administrator", 'danger')
+	flash("You are not logged in, Kindly log in first", 'danger')
 	return redirect(url_for('login'))
+
+
+
 
 #@app.route('/tenant')
 #def tenantPage():
@@ -247,6 +241,7 @@ def Listed():
 
 
 	return render_template('tolet.html')
+
 
 @app.route('/rentalsform', methods=['GET', 'POST'])
 def Rentals():
@@ -340,6 +335,7 @@ def MyRentals():
 			cur.close()
 		return render_template('MyRentals.html', data = data)
 	return render_template('MyRentals.html')
+
 @app.route('/maintenance')
 def maintenance():
 	form = maintenaceForm(request.form)
@@ -349,9 +345,7 @@ def maintenance():
 
 	return render_template('maintenance.html', form=form)
 
-#@app.route('/mybills')
-#def myBills():
-	
+
 	
 if __name__=="__main__":
 	app.run(debug=True)

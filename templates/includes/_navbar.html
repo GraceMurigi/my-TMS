@@ -43,12 +43,14 @@
             </li>
           
 
+
           {% if session.get('logged_in') %}
+
           <li class="nav-item"> 
             <a class="nav-link" href="{{url_for('Dashboard')}}">Dashboard   <span class="sr-only"></span></a>
           </li>
           {% endif %}
-           
+
           <li class="logout_link"> 
           </li>
           
@@ -64,13 +66,18 @@
       </div>
       <div class="right-sidemenu">
         <ul class="navbar-nav">
+
           {% if session.get('logged_in') %}
+
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('logout')}}"><i class="fas fa-sign-out-alt"></i>Logout   <span class="sr-only"></span></a>
           </li>
           {% endif %}
         </ul>
       </div>
+
+    </div>
+
 
 </nav>
 
