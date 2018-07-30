@@ -1,8 +1,12 @@
 '''
 THis module creates a user class that carters for all users attributes and properties
-"""
+'''
 
-'''class User(object):
+
+
+
+class User(object):
+
 	"""docstring for User with every user's common methods"""
 	
 	def __init__(self,userLevel, userFirstName, userLastName, userEmail, userPassword):

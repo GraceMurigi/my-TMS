@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, logging
 from passlib.hash import sha256_crypt
 from flask_mysqldb import MySQL
-from forms import managerSignupForm, tenantSignupForm, managerLoginForm, tenantloginForm, maintenaceForm, rentalsForm
+from forms import managerSignupForm, tenantSignupForm, managerLoginForm, tenantloginForm, maintenaceForm, rentalsForm, unitsForm
 #import flask_excel as excel
 
 #from flask_admin import Admin
@@ -15,14 +15,18 @@ app.secret_key ="Whatdoyouthink"
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'tms'
+app.config['MYSQL_DB'] = 'finalproject'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 #initializing mysql
 mysql = MySQL(app)
 
 #home page 
+
 @app.route('/')
+def home():
+	return render_template ("index.html")
+@app.route('/home')
 def index():
 	return render_template ("home.html")
 
@@ -39,20 +43,26 @@ def managerSignup():
 		password = sha256_crypt.encrypt(str(form.password.data))
 
 
+		try:
+			#create cursor
+			cur = mysql.connection.cursor()
+
+			# Execute query
+			cur.execute("INSERT INTO tenant_manager (first_name, last_name, email, phone_number, company, password)VALUES (%s, %s, %s, %s, %s, %s)",(
+				first_name, last_name, email, phone_number, company, password))
 		
-		#create cursor
-		cur = mysql.connection.cursor()
 
-		# Execute query
-		cur.execute("INSERT INTO tenant_manager (first_name, last_name, email, phone_number, company, password)VALUES (%s, %s, %s, %s, %s, %s)",(
-			first_name, last_name, email, phone_number, company, password))
-	
+			#commit to the database
+			mysql.connection.commit()
+			
+		except Exception as e:
+			flash( 'Seems there was an error: {}', format(e))
+			return render_template('managerSignup.html', form = form)
+			
+		finally:
+			#close connection
+			cur.close()
 
-		#commit to the database
-		mysql.connection.commit()
-
-		#close connection
-		cur.close()
 
 		flash("Signup successful!", "success")
 		return redirect(url_for('managerLogin'))
@@ -63,6 +73,7 @@ def managerSignup():
 def tenantSignup():
 	form = tenantSignupForm(request.form)
 	if request.method == 'POST' and form.validate():
+		unit = form.unit.data
 		first_name = form.first_name.data 
 		last_name = form.last_name.data
 		email = form.email.data
@@ -75,8 +86,8 @@ def tenantSignup():
 		cur = mysql.connection.cursor()
 
 		# Execute query
-		cur.execute("INSERT INTO tenant (first_name, last_name, email, phone_number, password)VALUES (%s, %s, %s, %s, %s)",(
-			first_name, last_name, email, phone_number, password))
+		cur.execute("INSERT INTO tenant (unit_id, first_name, last_name, email, phone_number, password)VALUES (%s, %s, %s, %s, %s, %s)",(
+			unit, first_name, last_name, email, phone_number, password))
 	
 
 		#commit to the database
@@ -85,7 +96,8 @@ def tenantSignup():
 		#close connection
 		cur.close()
 
-		flash("Signup successful!", "success")
+
+		flash("Sign successful!", "success")
 		return redirect(url_for('tenantLogin'))
 	return render_template('tenantsignup.html', form=form)
 
@@ -130,7 +142,7 @@ def managerLogin():
 					session['name'] = name[0]['first_name']
 
 					flash('You are now logged in', 'success')
-					return redirect(url_for('RentalManager'))
+					return redirect(url_for('Dashboard'))
 
 			else:
 
@@ -180,7 +192,7 @@ def tenantLogin():
 					#session['ten_id']= name[0]['ten_id']
 					session['name'] = name[0]['first_name']
 					flash('You are now logged in', 'success')
-					return redirect(url_for('Tenant'))
+					return redirect(url_for('Dashboard'))
 
 
 			else: 
@@ -202,6 +214,7 @@ def logout ():
 	session.clear()
 	flash('You are now logged out','danger')
 	return redirect(url_for('index'))
+
 # Dashboard route
 @app.route('/Dashboard')
 def Dashboard():
@@ -214,29 +227,11 @@ def Dashboard():
 	else:
 		flash('Sorry, you need to log in first', 'warning')
 		return redirect(url_for('login'))
-# Rental Manager dashboard
-@app.route('/rentalmanager')
-def RentalManager():
-	#if session.get('RM'):
-		return render_template('RMdashboard.html')
-	#flash("You are not logged in as a RentalManager",'danger')
-	#return redirect(url_for('login'))
-
-#Tenant manager dashboard 
-@app.route('/tenant')
-def Tenant():
-	#if session.get('T'):
-		return render_template('Tdashboard.html')
-	#flash("You should logged in as a Tenant to access this dashboard",'danger')
-	#return redirect(url_for('login'))
-
-#Admin dashboard 
-@app.route('/admin')
-def Admin():
-	if session.get('Admin'):
-		return render_template('admindashboard.html')
-	flash("You are not logged in as a site Administrator", 'danger')
+	flash("You are not logged in, Kindly log in first", 'danger')
 	return redirect(url_for('login'))
+
+
+
 
 #@app.route('/tenant')
 #def tenantPage():
@@ -248,8 +243,9 @@ def Listed():
 
 	return render_template('tolet.html')
 
+
 @app.route('/rentalsform', methods=['GET', 'POST'])
-def Rentals():
+def addRentals():
 	if session.get('mgr_id'):
 		
 		form =rentalsForm(request.form)
@@ -264,42 +260,7 @@ def Rentals():
 				
 
 				# Execute query
-				cur.execute("INSERT INTO rental_properties (address, name, units, manager_id)VALUES (%s, %s, %s, %s)",(
-					address, name, units, session['mgr_id']))
-	
-
-				#commit to the database
-				mysql.connection.commit()
-				flash('You have successfully created your rental property', 'success')
-				#close connection
-
-			except Exception as e:
-				flash("Sorry, property name already exists", "warning")
-
-			
-			finally:
-				cur.close()
-			
-			return redirect(url_for('Rentals'))
-	return render_template('rentals.html', form=form)
-
-
-@app.route('/addunits')
-def addUnits():
-	if session.get('mgr_id'):
-		form =unitsForm(request.form)
-		if request.method == 'POST' and form.validate():
-			address = form.address.data
-			name = form.name.data
-			units = form.units.data
-			#manager = form.manager.data
-			try:
-				#create cursor
-				cur = mysql.connection.cursor()
-				
-
-				# Execute query
-				cur.execute("INSERT INTO rental_properties (address, name, units, manager_id)VALUES (%s, %s, %s, %s)",(
+				cur.execute("INSERT INTO rentals (address, name, units, manager_id)VALUES (%s, %s, %s, %s)",(
 					address, name, units, session['mgr_id']))
 	
 
@@ -318,7 +279,7 @@ def addUnits():
 			return redirect(url_for('MyRentals'))
 	return render_template('rentals.html', form=form)
 
-@app.route('/MyRentals')
+@app.route('/MyRentals', methods=['GET', 'POST'])
 def MyRentals():
 	if session.get('mgr_id'):
 		try:
@@ -340,6 +301,67 @@ def MyRentals():
 			cur.close()
 		return render_template('MyRentals.html', data = data)
 	return render_template('MyRentals.html')
+
+
+@app.route('/unitsform', methods=['GET', 'POST'])
+def addUnits():
+	if session.get('ren_id'):
+		
+		form =unitsForm(request.form)
+		if request.method == 'POST' and form.validate():
+			ren_id = form.ren_id.data
+			name = form.name.data
+			vacancy = form.vacancy.data
+			try:
+				#create cursor
+				cur = mysql.connection.cursor()
+				
+
+				# Execute query
+				cur.execute("INSERT INTO unit (ren_id, features, vacancy)VALUES (%s, %s, %s)",(session['ren_id'], 
+					features, vacancy))
+	
+
+				#commit to the database
+				mysql.connection.commit()
+				flash('Unit added successfully!', 'success')
+				#close connection
+
+			except Exception as e:
+				flash("Sorry, please fill in all fields", "warning")
+
+			
+			finally:
+				cur.close()
+			
+			return redirect(url_for('MyRentals'))
+	return render_template('MyRentals.html', form=form)
+
+@app.route('/viewunits')
+def viewUnits():
+	if session.get('mgr_id'):
+		try:
+			cur = mysql.connection.cursor()
+			print('no error')
+			#get user by email 
+			result = cur.execute("SELECT * FROM unit WHERE ren_id = %s", (session['ren_id'], ))
+			if result > 0:
+				flash("Yeepy some data exists")
+				data = cur.fetchall()
+			else:
+				flash("Sorry no data for the manager")
+		except Exception as e:
+			flash('No units to show!')
+			print(e)
+			print('error aomewhee')
+			
+		finally:
+			cur.close()
+		return render_template('MyUnits.html', data = data)
+	return render_template('MyUnits.html')
+
+
+
 @app.route('/maintenance')
 def maintenance():
 	form = maintenaceForm(request.form)
@@ -349,9 +371,38 @@ def maintenance():
 
 	return render_template('maintenance.html', form=form)
 
-#@app.route('/mybills')
-#def myBills():
-	
+
+@app.route('/viewrequests')
+def viewRequests():
+
+	cur = mysql.connection.cursor()
+	cur.execute("SELECT * FROM maintenance SELECT ten_id FROM maintenance m INNER JOIN tenant t ON " )
+	data = cur.fetchall()
+	cur.close()
+
+
+	return render_template('request.html', data = data)
+
+@app.route ('/mytenants')
+def myTenants():
+	cur = mysql.connection.cursor()
+	cur.execute("" )
+	data = cur.fetchall()
+	cur.close()
+
+
+	return render_template('request.html', data = data)
+
+
+@app.route ('/vacantunits')
+def vacantunits():
+	cur = mysql.connection.cursor()
+	cur.execute("SELECT * FROM unit WHERE vacant = 'Y' " )
+	data = cur.fetchall()
+	cur.close()
+
+
+	return render_template('vacants.html', data = data)
 	
 if __name__=="__main__":
 	app.run(debug=True)

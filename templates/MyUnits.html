@@ -13,26 +13,23 @@
 
 
                 <tr>
+              <th>Unit ID</th>
               <th>Property ID</th>
-              <th>Property address</th>
-              <th>Property name</th>
-              <th>Number of units</th>
+              <th>Features</th>
+              <th>Vacant?</th>
 
 {% if data %}
           </tr>
 				  {% for rows in data %}
 				    <tr>
+				    	<td>{{rows['unit_id']}}</td>
 				    	<td>{{rows['ren_id']}}</td>
-				    	<td>{{rows['address']}}</td>
-				      	<td>{{rows['name']}}</td>
-				      	<td>{{rows['units']}}</td>
+				      	<td>{{rows['features']}}</td>
+				      	<td>{{rows['vacant']}}</td>
 
 				    <td>
-				<a href="/viewunits" class="btn btn-warning btn-xs">View Units</a>
 
-				<a href="/unitsform" class="btn btn-warning btn-xs">Add Units</a>
-
-                <a href="/deleteproperty" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this record?')">Delete Property</a>
+                <a href="/deleteunit" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this record?')">Delete Unit</a>
 
                     </td>
 				    </tr>

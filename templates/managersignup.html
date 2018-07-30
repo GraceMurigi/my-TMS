@@ -8,33 +8,35 @@
 	<div class="signup">
 		<div class="signup-screen">
 			<div class="app-title">
-				<h1>Sign up</h1>
+				<h1>Manager Signup</h1>
 			</div>
 
 			
 
 			<div class="form-group">
-				{{render_field(form.first_name, class_="form_control", placeholder='first')}}
+
+				{{render_field(form.first_name, class_="form_control", placeholder='Enter your first name')}}
+
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.last_name, class_="form_control")}}
+				{{render_field(form.last_name, class_="form_control", placeholder='Enter your last name')}}
 			</div>
 			
 			<div class="form-group">
-				{{render_field(form.email, class_="form_control")}}
+				{{render_field(form.email, class_="form_control", placeholder='Enter your email address')}}
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.phone_number, class_="form_control")}}
+				{{render_field(form.phone_number, class_="form_control", placeholder='Enter your phone number')}}
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.company, class_="form_control")}}
+				{{render_field(form.company, class_="form_control", placeholder='Enter your company/agency')}}
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.password, class_="form_control")}}
+				{{render_field(form.password, class_="form_control",)}}
 			</div>
 			
 			<div class="form-group">

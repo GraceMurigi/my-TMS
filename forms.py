@@ -18,6 +18,8 @@ class managerSignupForm(Form):
 	confirm = PasswordField('Confirm Password:')
 
 class tenantSignupForm(Form):
+	unit = StringField('Unit Rented:', [validators.Length(min=1, max= 50),
+		validators.DataRequired()])
 	first_name = StringField('First Name:',[validators.Length(min=1, max= 50),
 		validators.DataRequired()])
 	last_name = StringField('Last Name:',[validators.Length(min=1, max= 50),
@@ -31,12 +33,16 @@ class tenantSignupForm(Form):
 	confirm = PasswordField('Confirm Password:')
 
 class managerLoginForm(Form):
-	email = StringField('Email')
-	password = PasswordField('Password')
+	email = StringField('Email',[validators.Email(), validators.DataRequired()])
+	password = PasswordField('Password', [validators.DataRequired()])
+
+
+	
 
 class tenantloginForm(Form):
-	email = StringField('Email')
-	password = PasswordField('Password')
+	email = StringField('Email',[validators.Email(), validators.DataRequired()])
+	password = PasswordField('Password', [validators.DataRequired()])
+
 
 #maintenace form 
 class maintenaceForm(Form):
@@ -44,6 +50,7 @@ class maintenaceForm(Form):
 	description = TextAreaField ('Description:',[validators.Length(min=1, max= 200),
 		validators.DataRequired()])
 	
+
 class rentalsForm(Form):
 	address = TextAreaField('Address', [validators.Length(min=1, max= 200),
 		validators.DataRequired()])
@@ -52,14 +59,14 @@ class rentalsForm(Form):
 	units = StringField('Units', [validators.Length(min=1, max=50),
 		validators.DataRequired()])
 
-
 class unitsForm(Form):
-	pass
+	ren_id = TextAreaField('Property ID', [validators.Length(min=1, max= 200),
+		validators.DataRequired()])
+	features = TextAreaField ('Unit Features:',[validators.Length(min=1, max= 500),
+		validators.DataRequired()])
+	vacancy = SelectField('Vacant?:', choices =[('O','Occupied'), ('V', 'Vacant'),])
 	
 	
-
-
-
-
+	
 
 

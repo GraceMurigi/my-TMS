@@ -23,7 +23,9 @@
 					</div>
 					<div class="admin">
 						<h4>
-							Welcome. Your manager ID is {{session['mgr_id']}}<br>
+		Welcome, {{session['name']}}<br>
+							You are a Rental Manager
+
 						</h4>
 					</div>
 					<<div class="side-menu">
@@ -48,10 +50,12 @@
 							
 							<span>
 
+
 							<a href="{{url_for('MyRentals')}}">
 								<button>My Rentals</button>
 							</a>
-							<a href="{{url_for('Rentals')}}"><button class="button-success">Add New Rentals</button></a>
+
+							<a href="{{url_for('MyRentals')}}"><button class="button-success">Add New Rentals</button></a>
 
 							</span>
 						</div>
