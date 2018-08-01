@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8">
+			<table border="5" cellpadding="10" cellspacing="10" style= "color: #fff;">
+<!-- 			<table class="table table-striped" style="color: #fff;">
+				 -->				
+				<tbody>
+
+
+                <tr>
+              <th>Property ID</th>
+              <th>Property Name</th>
+              <th>Property Address</th>
+              <th>Number of Units</th>
+              <th>Other Deatils</th>
+
+{% if data %}
+          </tr>
+				  {% for rows in data %}
+				    <tr>
+				    	<td>{{rows['ren_id']}}</td>
+				    	<td>{{rows['name']}}</td>
+				      	<td>{{rows['address']}}</td>
+				      	<td>{{rows['units']}}</td>
+				      	<td>{{rows['description']}}</td>
+
+
+				    <td>
+				<a href="/viewunits" class="btn btn-warning btn-xs">View Units</a>
+
+				<a href="/unitsform" class="btn btn-warning btn-xs">Add Units</a>
+
+                <a href="/deleteproperty" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this record?')">Delete Property</a>
+
+                    </td>
+				    </tr>
+				  {% endfor %}
+				  there must be some data somewhere
+
+{% endif %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+{% endblock%}

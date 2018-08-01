@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+<form method="POST" action="/unitsform">
+
+
+	<div class="rentals">
+		<div class="rentals-screen">
+			<div class="app-title">
+				<h1>Add a Unit</h1>
+			</div>
+
+			<!--showing input fields for account type, first name, last name, email, password 
+				and phonenumber-->
+	
+			<div class="form-group">
+				{{render_field(form.ren_id, class_="form_control")}}
+			</div>
+
+			<div class="form-group">
+
+				{{render_field(form.features, class_="form_control")}}
+			</div>
+
+			<div class="form-group">
+				{{render_field(form.vacancy, class_="form_control")}}
+			</div>
+
+			
+
+				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+		</div>
+
+	<div class="clear"> </div>
+	</div>	
+
+</form> 
+
+{% endblock %}

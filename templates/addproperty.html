@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+<form method="POST" action="/propertyform">
+
+
+	<div class="rentals">
+		<div class="rentals-screen">
+			<div class="app-title">
+				<h1>Record a New Rental Property</h1>
+			</div>
+
+			<div class="form-group">
+				{{render_field(form.name, class_="form_control")}}
+			</div>
+	
+			<div class="form-group">
+				{{render_field(form.address, class_="form_control")}}
+			</div>
+
+			<div class="form-group">
+				{{render_field(form.units, class_="form_control")}}
+			</div>
+
+			<div class="form-group">
+				{{render_field(form.description, class_="form_control")}}
+			</div>
+
+			
+
+				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+		</div>
+
+	<div class="clear"> </div>
+	</div>	
+
+</form> 
+
+{% endblock %}

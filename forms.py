@@ -1,4 +1,6 @@
-from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, validators, SelectField
+from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, SelectField, IntegerField, validators
+
+
 from wtforms.validators import InputRequired, Email, Length
 
 #user sign up 
@@ -51,22 +53,26 @@ class maintenaceForm(Form):
 		validators.DataRequired()])
 	
 
-class rentalsForm(Form):
+class propertyForm(Form):
+	name = StringField('Property name', [validators.Length(min=1, max=200),
+		validators.DataRequired()])
 	address = TextAreaField('Address', [validators.Length(min=1, max= 200),
 		validators.DataRequired()])
-	name = StringField('Property name', [validators.Length(min=1, max=50),
+	units = StringField('Number of Units', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
-	units = StringField('Units', [validators.Length(min=1, max=50),
+	description = StringField('Other details', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
 
 class unitsForm(Form):
-	ren_id = TextAreaField('Property ID', [validators.Length(min=1, max= 200),
+	ren_id = IntegerField ('Property ID', [validators.Length(min=1, max= 200),
 		validators.DataRequired()])
-	features = TextAreaField ('Unit Features:',[validators.Length(min=1, max= 500),
+	features = TextAreaField('Unit Features:',[validators.Length(min=1, max= 500),
 		validators.DataRequired()])
-	vacancy = SelectField('Vacant?:', choices =[('O','Occupied'), ('V', 'Vacant'),])
+	vacancy = SelectField('Vacant?:', choices =[('occupied','Occupied'), ('vacant', 'Vacant'),])
 	
-	
+
+# class billsForm(Form):
+# 	unit_id = TextAreaField()
 	
 
 

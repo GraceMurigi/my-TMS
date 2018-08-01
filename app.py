@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, logging
 from passlib.hash import sha256_crypt
 from flask_mysqldb import MySQL
-from forms import managerSignupForm, tenantSignupForm, managerLoginForm, tenantloginForm, maintenaceForm, rentalsForm, unitsForm
+from forms import managerSignupForm, tenantSignupForm, managerLoginForm, tenantloginForm, maintenaceForm, propertyForm, unitsForm
 #import flask_excel as excel
 
 #from flask_admin import Admin
@@ -26,9 +26,20 @@ mysql = MySQL(app)
 @app.route('/')
 def home():
 	return render_template ("index.html")
+
 @app.route('/home')
 def index():
-	return render_template ("home.html")
+	return render_template ("index.html")
+
+@app.route ('/about')
+def about():
+	return render_template('about.html')
+
+@app.route ('/contactus')
+def contact():
+	return render_template ('contact.html')
+
+	
 
 #manager signup page 
 @app.route('/managersignup', methods=['GET','POST'])
@@ -226,33 +237,21 @@ def Dashboard():
 		return render_template('admindashboard.html')
 	else:
 		flash('Sorry, you need to log in first', 'warning')
-		return redirect(url_for('login'))
+		return redirect(url_for('home'))
 	flash("You are not logged in, Kindly log in first", 'danger')
-	return redirect(url_for('login'))
+	return redirect(url_for('home'))
 
-
-
-
-#@app.route('/tenant')
-#def tenantPage():
-	#if session.get('')
-
-@app.route('/tolet')
-def Listed():
-
-
-	return render_template('tolet.html')
-
-
-@app.route('/rentalsform', methods=['GET', 'POST'])
-def addRentals():
+# Manager to add new property 
+@app.route('/propertyform', methods=['GET', 'POST'])
+def addProperty():
 	if session.get('mgr_id'):
 		
-		form =rentalsForm(request.form)
+		form =propertyForm(request.form)
 		if request.method == 'POST' and form.validate():
-			address = form.address.data
 			name = form.name.data
+			address = form.address.data
 			units = form.units.data
+			description = form.description.data
 			#manager = form.manager.data
 			try:
 				#create cursor
@@ -260,8 +259,8 @@ def addRentals():
 				
 
 				# Execute query
-				cur.execute("INSERT INTO rentals (address, name, units, manager_id)VALUES (%s, %s, %s, %s)",(
-					address, name, units, session['mgr_id']))
+				cur.execute("INSERT INTO rental_properties (name, address, units, description, mgr_id)VALUES (%s, %s, %s, %s, %s)",(
+					name, address, units, description, session['mgr_id']))
 	
 
 				#commit to the database
@@ -276,31 +275,34 @@ def addRentals():
 			finally:
 				cur.close()
 			
-			return redirect(url_for('MyRentals'))
-	return render_template('rentals.html', form=form)
+			return redirect(url_for('myProperty'))
+	return render_template('addproperty.html', form=form)
 
-@app.route('/MyRentals', methods=['GET', 'POST'])
-def MyRentals():
+@app.route('/viewproperty', methods=['GET', 'POST'])
+def myProperty():
 	if session.get('mgr_id'):
 		try:
 			cur = mysql.connection.cursor()
 			print('no error')
 			#get user by email 
-			result = cur.execute("SELECT * FROM rental_properties WHERE manager_id = %s", (session['mgr_id'], ))
-			if result > 0:
-				flash("Yeepy some data exists")
-				data = cur.fetchall()
-			else:
-				flash("Sorry no data for the manager")
+			# result = cur.execute("SELECT * FROM rental_properties WHERE manager_id = %s", (session['mgr_id'], ))
+			cur.execute("SELECT * FROM rental_properties WHERE mgr_id = %s", (session['mgr_id'], ))
+
+			# if result > 0:
+			# 	flash("Yeepy some data exists")
+			data = cur.fetchall()
+				# else:
+				# 	flash("Sorry, tenant manager data doesn't exist")
+
 		except Exception as e:
 			flash('Kindly add a property first')
 			print(e)
-			print('error aomewhee')
+			print('error somewhere')
 			
 		finally:
 			cur.close()
-		return render_template('MyRentals.html', data = data)
-	return render_template('MyRentals.html')
+			return render_template('propertylist.html', data = data)
+	return render_template('propertylist.html')
 
 
 @app.route('/unitsform', methods=['GET', 'POST'])
@@ -334,8 +336,8 @@ def addUnits():
 			finally:
 				cur.close()
 			
-			return redirect(url_for('MyRentals'))
-	return render_template('MyRentals.html', form=form)
+			return redirect(url_for('myProperty'))
+	return render_template('addunit.html', form=form)
 
 @app.route('/viewunits')
 def viewUnits():
@@ -357,8 +359,8 @@ def viewUnits():
 			
 		finally:
 			cur.close()
-		return render_template('MyUnits.html', data = data)
-	return render_template('MyUnits.html')
+		return render_template('unitlist.html', data = data)
+	return render_template('unitlist.html')
 
 
 
@@ -397,12 +399,18 @@ def myTenants():
 @app.route ('/vacantunits')
 def vacantunits():
 	cur = mysql.connection.cursor()
-	cur.execute("SELECT * FROM unit WHERE vacant = 'Y' " )
+	cur.execute("SELECT * FROM unit WHERE status = 'vacant' " )
 	data = cur.fetchall()
 	cur.close()
 
 
 	return render_template('vacants.html', data = data)
-	
+
+@app.route('/tolet')
+def Listed():
+
+
+	return render_template('tolet.html')
+
 if __name__=="__main__":
 	app.run(debug=True)

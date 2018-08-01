@@ -16,7 +16,7 @@ body{
 
 }
 .homepage-image{
-  background: url("../images/keysign.jpg") no-repeat;
+  background: url("../images/keysign.jpg") no-repeat transparent;
   background-size: auto auto;
   background-size: cover;
   position: relative;
@@ -26,7 +26,7 @@ body{
   display: block;
   
 }
-.homepage-image::before{
+/*.homepage-image::before{
   position: absolute;
   content: "";
   top: 0;
@@ -34,11 +34,11 @@ body{
   left: 0;
   right: 0;
   background-color: rgba(4, 31, 59, 0.7);
-}
+}*/
 
-.page-bg{
+/*.page-bg{
     background-image: url("../images/keysign.jpg") transparent;
-
+*/
 
 }
 
@@ -184,10 +184,10 @@ margin-top: -20px;
 	margin: 5px; 
 }
 
-.dash-bg {
-  background-color: #7E909A
+/*.dash-bg {
+  background-color: #fff;
 
-}
+}*/
 nav .right {
     float: right;
     }
@@ -205,6 +205,8 @@ nav .right {
 .navbar-brand {
     font-size: 2em;
     font-weight: bolder;
+    text-align: left;
+
 }
 
 
@@ -212,13 +214,13 @@ nav .right {
 .navbar a:not(.navbar-brand) {
     font-weight: bolder;
     font-size: 1.4em;
-    color: red !important;
+    color: #fff !important;
 }
 .navbar a:not(.navbar-brand):hover{
     color:#fff !important;
 }
 
-header.masthead {
+/*header.masthead {
     position: relative;
     background-color: #343a40;
     height: 100vh;
@@ -407,7 +409,7 @@ footer.footer {
 
 /* Footer */
 
-section {
+/*section {
     padding: 60px 0 18px;
 }
 
@@ -487,7 +489,6 @@ section .section-title {
 #footer ul.quick-links li:hover a i {
     font-weight: 700;
 }
-
 @media (max-width:767px) {
     #footer h5 {
         padding-left: 0;
@@ -495,6 +496,38 @@ section .section-title {
         padding-bottom: 0px;
         margin-bottom: 10px;
     }
+}*/
+
+#footer {
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  background: 
+  /* color overlay */
+   linear-gradient( rgba(55, 90, 14, 0.76),
+    rgba(83, 10, 10, 0.45) ),;
+}
+
+
+/* Custom footer CSS
+-------------------------------------------------- */
+
+.container {
+    width: auto;
+    max-width: 1268px;
+    padding: 36px;
+}
+
+/*.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}*/
+.container .text-muted {
+  margin: 20px 0;
+}
+.footertext {
+  color: #ffffff;
 }
 
 
@@ -684,15 +717,17 @@ font-weight: 800;
   margin-left: -85px;
 }
 .jumbosparent{
-
-background-color: rgba(3, 255, 237, 0.5);
-border: 1px solid #eee;
-opacity: 0.9;
-
-width: 93%;
-margin: 100px auto;
-
+  background-color: rgba(15, 105, 99, 0.7);
+  opacity: 1;
+  width: 51%;
+  margin: 100px auto;
+      margin-top: 100px;
+      margin-right: auto;
+      margin-bottom: 100px;
+      margin-left: auto;
 }
+
+
 .button-hover button{
   border: 1px solid #fff;
 background-color: #296c1f;

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>myTMS</title>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/custom.css') }}">
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/fontawesome/css/all.css') }}">
+		<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>4
+		<script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+		<!--<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">-->
+ 		<!--<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">-->
+		<!--<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+		<script src="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>-->
+	</head>
+	<body>
+		
+		<div class=" down">
+
+		{% include 'includes/_messages.html' %}
+		{% block body %}{% endblock %}
+		</div>
+
+		<script type="text/javascript" src="{{ url_for('static',filename='js/custom.js') }}"> </script>	
+		<script type="text/javascript" src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+
+
+
+
+	</body>
+</html>
