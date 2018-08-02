@@ -64,7 +64,7 @@ class propertyForm(Form):
 		validators.DataRequired()])
 
 class unitsForm(Form):
-	ren_id = IntegerField ('Property ID', [validators.Length(min=1, max= 200),
+	unit_id = StringField('Unit Name:', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
 	features = TextAreaField('Unit Features:',[validators.Length(min=1, max= 500),
 		validators.DataRequired()])

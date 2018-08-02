@@ -198,15 +198,16 @@ def tenantLogin():
 			if sha256_crypt.verify(password_candidate, password):
 				#passed
 					session['logged_in']= True
-					name = cur.execute("SELECT first_name FROM tenant WHERE email = %s", [email])
+					name = cur.execute("SELECT * FROM tenant WHERE email = %s", [email])
 					name = cur.fetchall()
-					#session['ten_id']= name[0]['ten_id']
+					session['ten_id']= name[0]['ten_id']
 					session['name'] = name[0]['first_name']
 					flash('You are now logged in', 'success')
 					return redirect(url_for('Dashboard'))
 
 
 			else: 
+				flash("wrong credentials")
 				error = 'INVALID LOGIN CREDENTIALS'
 				return render_template('tenantlogin.html', error=error, form=form)
  				 
@@ -231,7 +232,7 @@ def logout ():
 def Dashboard():
 	if session.get('mgr_id'):
 		return render_template('RMdashboard.html')
-	elif session.get('tenant_id'):
+	elif session.get('ten_id'):
 		return render_template('Tdashboard.html')
 	elif session.get('Admin'):
 		return render_template('admindashboard.html')
@@ -302,51 +303,53 @@ def myProperty():
 		finally:
 			cur.close()
 			return render_template('propertylist.html', data = data)
-	return render_template('propertylist.html')
+	return redirect(url_for('managerLogin'))
 
 
-@app.route('/unitsform', methods=['GET', 'POST'])
-def addUnits():
-	if session.get('ren_id'):
-		
-		form =unitsForm(request.form)
-		if request.method == 'POST' and form.validate():
-			ren_id = form.ren_id.data
-			name = form.name.data
-			vacancy = form.vacancy.data
-			try:
-				#create cursor
-				cur = mysql.connection.cursor()
-				
-
-				# Execute query
-				cur.execute("INSERT INTO unit (ren_id, features, vacancy)VALUES (%s, %s, %s)",(session['ren_id'], 
-					features, vacancy))
+@app.route('/unitsform/<ren_id>', methods=['GET', 'POST'])
+def addUnits(ren_id):
 	
-
-				#commit to the database
-				mysql.connection.commit()
-				flash('Unit added successfully!', 'success')
-				#close connection
-
-			except Exception as e:
-				flash("Sorry, please fill in all fields", "warning")
-
+		
+	form =unitsForm(request.form)
+	if request.method == 'POST' and form.validate():
+		unit_id = form.unit_id.data
+		features = form.features.data
+		vacancy = form.vacancy.data
+		try:
+			#create cursor
+			cur = mysql.connection.cursor()
 			
-			finally:
-				cur.close()
-			
-			return redirect(url_for('myProperty'))
-	return render_template('addunit.html', form=form)
 
-@app.route('/viewunits')
-def viewUnits():
+			# Execute query
+			cur.execute("INSERT INTO unit (unit_id, ren_id, features, status)VALUES (%s, %s, %s, %s)",(unit_id,ren_id, 
+				features, vacancy))
+
+			print("working")
+			#commit to the database
+			mysql.connection.commit()
+			flash('Unit added successfully!', 'success')
+			#close connection
+
+		except Exception as e:
+			flash("Sorry, please fill in all fields", "warning")
+			print("error")
+			print(e)
+		
+		finally:
+			cur.close()
+		
+		return redirect(url_for('addUnits', ren_id = ren_id))
+	return render_template('addunit.html', form=form, ren_id = ren_id)
+
+@app.route('/viewunits/<ren_id>')
+def viewUnits(ren_id):
 	if session.get('mgr_id'):
 		try:
 			cur = mysql.connection.cursor()
 			print('no error')
 			#get user by email 
-			result = cur.execute("SELECT * FROM unit WHERE ren_id = %s", (session['ren_id'], ))
+			result = cur.execute("SELECT * FROM unit WHERE ren_id = %s", (ren_id, ))
+
 			if result > 0:
 				flash("Yeepy some data exists")
 				data = cur.fetchall()
@@ -359,8 +362,8 @@ def viewUnits():
 			
 		finally:
 			cur.close()
-		return render_template('unitlist.html', data = data)
-	return render_template('unitlist.html')
+		return render_template('unitlist.html', data = data, ren_id = ren_id)
+	return redirect(url_for('managerLogin'))
 
 
 

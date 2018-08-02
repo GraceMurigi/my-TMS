@@ -4,8 +4,8 @@
 
 {% from "includes/_formhelpers.html" import render_field %}
 
-<form method="POST" action="/unitsform">
-
+<form method="POST" action="/unitsform/{{ren_id}}">
+{{ren_id}}
 
 	<div class="rentals">
 		<div class="rentals-screen">
@@ -17,11 +17,10 @@
 				and phonenumber-->
 	
 			<div class="form-group">
-				{{render_field(form.ren_id, class_="form_control")}}
+				{{render_field(form.unit_id, class_="form_control")}}
 			</div>
 
 			<div class="form-group">
-
 				{{render_field(form.features, class_="form_control")}}
 			</div>
 
