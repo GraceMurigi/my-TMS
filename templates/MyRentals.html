@@ -15,9 +15,10 @@
               <th>Property address</th>
               <th>Property name</th>
               <th>Number of units</th>
+               </tr>
 
 {% if data %}
-          </tr>
+         
 				  {% for rows in data %}
 				    <tr>
 				    	<td>{{rows['ren_id']}}</td>
@@ -26,9 +27,12 @@
 				      	<td>{{rows['units']}}</td>
 				    </tr>
 				  {% endfor %}
-				  there must be some data somewhere
+				  
+
 
 {% endif %}
+
+
 				</tbody>
 			</table>
 		</div>

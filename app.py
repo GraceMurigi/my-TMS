@@ -108,7 +108,7 @@ def tenantSignup():
 def managerLogin():
 	if session.get('logged_in'):
 		flash("You are already logged in",'warning')
-		return redirect(url_for('index'))
+		return redirect(url_for('Dashboard'))
 	form = managerLoginForm(request.form)
 	if session.get('logged_in'):
 		redirect(url_for('index'))
@@ -141,7 +141,7 @@ def managerLogin():
 					session['name'] = name[0]['first_name']
 
 					flash('You are now logged in', 'success')
-					return redirect(url_for('RentalManager'))
+					return redirect(url_for('Dashboard'))
 
 			else:
 
@@ -163,7 +163,7 @@ def managerLogin():
 def tenantLogin():
 	if session.get('logged_in'):
 		flash("You are already logged in",'warning')
-		return redirect(url_for('index'))
+		return redirect(url_for('Dashboard'))
 	form = managerLoginForm(request.form)
 	if session.get('logged_in'):
 		redirect(url_for('index'))
@@ -186,12 +186,14 @@ def tenantLogin():
 			if sha256_crypt.verify(password_candidate, password):
 				#passed
 					session['logged_in']= True
-					name = cur.execute("SELECT first_name FROM tenant WHERE email = %s", [email])
+					name = cur.execute("SELECT * FROM tenant WHERE email = %s", [email])
 					name = cur.fetchall()
-					#session['ten_id']= name[0]['ten_id']
+					
 					session['name'] = name[0]['first_name']
+					session['tenant_id']= name[0]['ten_id']
 					flash('You are now logged in', 'success')
-					return redirect(url_for('Tenant'))
+					return redirect(url_for('Dashboard'))
+					
 
 
 			else: 
@@ -318,14 +320,16 @@ def MyRentals():
 	if session.get('mgr_id'):
 		try:
 			cur = mysql.connection.cursor()
-			print('no error')
+			
 			#get user by email 
 			result = cur.execute("SELECT * FROM rental_properties WHERE manager_id = %s", (session['mgr_id'], ))
 			if result > 0:
 				flash("Yeepy some data exists")
 				data = cur.fetchall()
 			else:
-				flash("Sorry no data for the manager")
+				data = 0
+				flash('sorry you do  not have rental properties, kindly add properties',"danger")
+				return redirect(url_for('Rentals'))
 		except Exception as e:
 			flash('Kindly add a property first')
 			print(e)

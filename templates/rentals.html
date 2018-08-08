@@ -3,15 +3,15 @@
 {% block body %}
 
 {% from "includes/_formhelpers.html" import render_field %}
-
+<div class="form-page">
+		<div class="app-title">
+				<h1>Add New Rental Property</h1>
+			</div>
 <form method="POST" action="/rentalsform">
 
 
 	<div class="rentals">
-		<div class="rentals-screen">
-			<div class="app-title">
-				<h1>Add New Rental Property</h1>
-			</div>
+		
 
 			<!--showing input fields for account type, first name, last name, email, password 
 				and phonenumber-->
@@ -38,5 +38,5 @@
 	</div>	
 
 </form> 
-
+</div>
 {% endblock %}

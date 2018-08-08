@@ -47,18 +47,63 @@ body{
     text-align: left;
     width: 40%;
 }
+
+.margin-space{
+  margin: 65px auto;
+  width: 80%;
+}
 .down{
 
 	
 
-	margin-top:50px;
+	
 
 	z-index: 9999;
+}
+.form-page .app-title{
+  color: #fff;
+  position: relative;
+}
+.help-inline{
+
+}
+.form-page{
+  background:url('../images/design images/payroom.jpg') no-repeat;
+  background-size: cover;
+  height: 100%;
+  min-height: 610px;
+  position: relative;
+  padding: 50px;
+ 
+  }
+  .form-page input,.form-page textarea, .form-page  .submit   {
+    width: 60%;
+    float: right;
+  }
+.form-page::before{
+  position: absolute;
+content: "";
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(4, 31, 59, 0.7);
+}
+.form-page form{
+  position: relative;
+  width: 60%;
+  margin: 0 auto;
+  background-color:rgba(87, 218, 204, 0.5);
+  padding: 20px;
+  border-radius: 2px;
+}
+.form-page label{
+  color: aliceblue;
 }
 .button-success{
 	background: rgba(0, 128, 0, 0.6);
     border-radius: 2px;
-    width: 110px;
+    
     height: 40px;
 
 }
@@ -148,7 +193,9 @@ input.submit{
 .app-title {
 text-align: center;
 color: #110c0c;
+
 }
+
  
 .login-form {
 text-align: center;
@@ -156,17 +203,21 @@ margin-top: -20px;
 }
 
 .form-group {
-
+  overflow: hidden;
+  border-bottom: 1px dotted #eee;
+  padding: 10px;
+  box-shadow: 
 }
 .form-group label, .form-group input{
 	display: inline-block;
   margin: 10px;
 }
 .form-group label{
+  position: relative;
 
 }
 .form-group input, .form-group select{
-	float: right;
+	]
   width: 240px;
 
 }
@@ -203,16 +254,15 @@ nav .right {
     padding-bottom: 0;
 }
 .navbar-brand {
-    font-size: 2em;
-    font-weight: bolder;
+    font-size: 19px;
+ 
 }
 
 
 
 .navbar a:not(.navbar-brand) {
     font-weight: bolder;
-    font-size: 1.4em;
-    color: red !important;
+       color: red !important;
 }
 .navbar a:not(.navbar-brand):hover{
     color:#fff !important;
