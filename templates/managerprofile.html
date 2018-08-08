@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+<form method="POST" action="/managerprofile">
+
+	<div class="signup">
+		<div class="signup-screen">
+			<div class="app-title">
+				<h4>Rental Manager Profile</h4>
+			</div>
+
+			<div class="form-group">
+
+				{{render_field(form.email, class_="form_control", placeholder='Enter your work email')}}
+
+			</div>
+
+			<div class="form-group">
+
+				{{render_field(form.phone, class_="form_control", placeholder='Enter work phone number')}}
+
+			</div>
+
+
+
+			<div class="form-group">
+				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+			</div>
+
+
+
+
+			<div class="clear">
+				
+			</div>
+		</div>
+
+	</div>
+
+</form> 
+
+
+
+{% endblock %}

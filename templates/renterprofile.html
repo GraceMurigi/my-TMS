@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+<form method="POST" action="/renterprofile">
+
+	<div class="signup">
+		<div class="signup-screen">
+			<div class="app-title">
+				<h4>Tenant Verfication Profile</h4>
+			</div>
+
+			
+			<div class="form-group">
+
+				{{render_field(form.proof_document, class_="form_control", placeholder='Select type of ID document')}}
+
+			</div>
+
+			<div class="form-group">
+				{{render_field(form.document_number, class_="form_control", placeholder='Enter ID Document Number')}}
+
+			</div>
+			
+			
+			<div class="form-group">
+				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+			</div>
+
+
+
+
+			<div class="clear">
+				
+			</div>
+		</div>
+
+	</div>
+
+</form> 
+
+
+
+{% endblock %}

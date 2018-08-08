@@ -1,27 +1,8 @@
 from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, SelectField, IntegerField, validators
-
-
 from wtforms.validators import InputRequired, Email, Length
-
 #user sign up 
-class managerSignupForm(Form):
-	#account = SelectField('Account Type:', choices =[('T','Tenant'), ('RM', 'Rental Manager')])
-	first_name = StringField('First Name:',[validators.Length(min=1, max= 50),
-		validators.DataRequired()])
-	last_name = StringField('Last Name:',[validators.Length(min=1, max= 50),
-		validators.DataRequired()])
-	email = StringField('Email:',[validators.Email(), validators.DataRequired()])
-	phone_number = StringField('Phone Number:', [validators.Length(min=5, max= 15),]) 
-	company = StringField('Company/Agency:', [validators.Length(min=5, max= 50), validators.DataRequired()])
-	password = PasswordField('Password:',[
-		validators.DataRequired(),
-		validators.EqualTo('confirm',message ='Passwords do not match')
-		])
-	confirm = PasswordField('Confirm Password:')
-
-class tenantSignupForm(Form):
-	unit = StringField('Unit Rented:', [validators.Length(min=1, max= 50),
-		validators.DataRequired()])
+class SignupForm(Form):
+	account = SelectField('Account Type:', choices =[('T','Tenant'), ('RM', 'Rental Manager')])
 	first_name = StringField('First Name:',[validators.Length(min=1, max= 50),
 		validators.DataRequired()])
 	last_name = StringField('Last Name:',[validators.Length(min=1, max= 50),
@@ -34,17 +15,9 @@ class tenantSignupForm(Form):
 		])
 	confirm = PasswordField('Confirm Password:')
 
-class managerLoginForm(Form):
+class LoginForm(Form):
 	email = StringField('Email',[validators.Email(), validators.DataRequired()])
 	password = PasswordField('Password', [validators.DataRequired()])
-
-
-	
-
-class tenantloginForm(Form):
-	email = StringField('Email',[validators.Email(), validators.DataRequired()])
-	password = PasswordField('Password', [validators.DataRequired()])
-
 
 #maintenace form 
 class maintenaceForm(Form):
@@ -52,10 +25,10 @@ class maintenaceForm(Form):
 	description = TextAreaField ('Description:',[validators.Length(min=1, max= 200),
 		validators.DataRequired()])
 	
-
 class propertyForm(Form):
 	name = StringField('Property name', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
+	purpose = SelectField ('Property type', choices =[('residential','Residential'), ('commericial', 'Commercial')])
 	address = TextAreaField('Address', [validators.Length(min=1, max= 200),
 		validators.DataRequired()])
 	units = StringField('Number of Units', [validators.Length(min=1, max=200),
@@ -64,15 +37,28 @@ class propertyForm(Form):
 		validators.DataRequired()])
 
 class unitsForm(Form):
-	unit_id = StringField('Unit Name:', [validators.Length(min=1, max=200),
+	unit_name = StringField('Unit Name:', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
 	features = TextAreaField('Unit Features:',[validators.Length(min=1, max= 500),
 		validators.DataRequired()])
-	vacancy = SelectField('Vacant?:', choices =[('occupied','Occupied'), ('vacant', 'Vacant'),])
-	
 
-# class billsForm(Form):
-# 	unit_id = TextAreaField()
+class ManagerForm(Form):
+	email = StringField('Work Email:', [validators.Email(), validators.DataRequired()])
+	phone = StringField('Work Telephone Number:', [validators.Length(min=1, max=200),
+		validators.DataRequired()])
+	document_number = StringField('Identification Document Number:')
+
 	
+class TenantForm(Form):
+	proof_document = SelectField('Identification Document:', choices=[('National ID', 'National ID Card'), ('Drivers License', 'Drivers License'),
+		('Passport','Passport'), ('Company Registration', 'Company Registration')]) 
+	document_number = StringField('Identification Document Number:', [validators.Length(min=5, max=20),
+		validators.DataRequired()])
+
+
+
+
+
+
 
 

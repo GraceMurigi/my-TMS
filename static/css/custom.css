@@ -89,12 +89,48 @@ th{
     width: 40%;
 }
 .down{
-
-	
-
-	
-
 	z-index: 9999;
+}
+
+.form-page .app-title{
+  color: #fff;
+  position: relative;
+}
+.help-inline{
+
+}
+.form-page{
+  background:url('../images/design images/payroom.jpg') no-repeat;
+  background-size: cover;
+  height: 100%;
+  min-height: 610px;
+  position: relative;
+  padding: 50px;
+ 
+  }
+.form-page input,.form-page textarea, .form-page  .submit   {
+    width: 60%;
+    float: right;
+  }
+.form-page::before{
+  position: absolute;
+content: "";
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(4, 31, 59, 0.7);
+}
+.form-page form{
+  position: relative;
+  width: 60%;
+  margin: 0 auto;
+  background-color:rgba(87, 218, 204, 0.5);
+  padding: 20px;
+  border-radius: 2px;
+}
+.form-page label{
+  color: aliceblue;
 }
 .button-success{
 	background: rgb(12, 14, 21);
@@ -970,3 +1006,4 @@ width: 42%;
 margin: 137px auto 0 auto;
 }
 
+/*FAQs pages */

@@ -3,38 +3,44 @@
 {% block body %}
 
 {% from "includes/_formhelpers.html" import render_field %}
-<form method="POST">
+<form method="POST" action="/signup">
 
 	<div class="signup">
 		<div class="signup-screen">
 			<div class="app-title">
-				<h1>Sign up</h1>
+				<h4>Signup</h4>
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.unit, class_="form_control")}}
-			</div>
-							
-			<div class="form-group">
-				{{render_field(form.first_name, class_="form_control")}}
+
+				{{render_field(form.account, class_="form_control")}}
+
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.last_name, class_="form_control")}}
+
+				{{render_field(form.first_name, class_="form_control", placeholder='Enter your first name')}}
+
+			</div>
+
+			<div class="form-group">
+				{{render_field(form.last_name, class_="form_control", placeholder='Enter your last name')}}
 			</div>
 			
 			<div class="form-group">
-				{{render_field(form.email, class_="form_control")}}
+				{{render_field(form.email, class_="form_control", placeholder='Enter your email address')}}
 			</div>
 
 			<div class="form-group">
-				{{render_field(form.phone_number, class_="form_control")}}
+				{{render_field(form.phone_number, class_="form_control", placeholder='Enter your phone number')}}
 			</div>
 
+			
 			<div class="form-group">
 				{{render_field(form.password, class_="form_control")}}
 			</div>
 			
+
 			<div class="form-group">
 				{{render_field(form.confirm, class_="form_control")}}
 			</div>
@@ -42,6 +48,9 @@
 			<div class="form-group">
 				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
 			</div>
+
+
+
 
 			<div class="clear">
 				

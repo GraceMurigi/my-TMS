@@ -1,21 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, logging
 from passlib.hash import sha256_crypt
 from flask_mysqldb import MySQL
-from forms import managerSignupForm, tenantSignupForm, managerLoginForm, tenantloginForm, maintenaceForm, propertyForm, unitsForm
+from forms import SignupForm, LoginForm, maintenaceForm, propertyForm, unitsForm, ManagerForm, TenantForm
 #import flask_excel as excel
 
-#from flask_admin import Admin
 
 
 app = Flask(__name__)
 #Bootstrap(app)
 
-app.secret_key ="Whatdoyouthink"
+app.secret_key ="Whatdoyouthink123"
 #configure mysql
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'finalproject'
+app.config['MYSQL_DB'] = 'tenant_management'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 #initializing mysql
@@ -42,15 +41,15 @@ def contact():
 	
 
 #manager signup page 
-@app.route('/managersignup', methods=['GET','POST'])
-def managerSignup():
-	form = managerSignupForm(request.form)
+@app.route('/signup', methods=['GET','POST'])
+def Signup():
+	form = SignupForm(request.form)
 	if request.method == 'POST' and form.validate():
+		account = form.account.data
 		first_name = form.first_name.data 
 		last_name = form.last_name.data
 		email = form.email.data
 		phone_number = form.phone_number.data
-		company = form.company.data
 		password = sha256_crypt.encrypt(str(form.password.data))
 
 
@@ -59,16 +58,16 @@ def managerSignup():
 			cur = mysql.connection.cursor()
 
 			# Execute query
-			cur.execute("INSERT INTO tenant_manager (first_name, last_name, email, phone_number, company, password)VALUES (%s, %s, %s, %s, %s, %s)",(
-				first_name, last_name, email, phone_number, company, password))
+			cur.execute("INSERT INTO users (account, first_name, last_name, email, phone_number, password)VALUES (%s, %s, %s, %s, %s, %s)",(
+				account, first_name, last_name, email, phone_number, password))
 		
 
 			#commit to the database
 			mysql.connection.commit()
 			
 		except Exception as e:
-			flash( 'Seems there was an error: {}', format(e))
-			return render_template('managerSignup.html', form = form)
+			flash( 'Signup error!: {}', format(e))
+			return render_template('Signup.html', form = form)
 			
 		finally:
 			#close connection
@@ -76,52 +75,16 @@ def managerSignup():
 
 
 		flash("Signup successful!", "success")
-		return redirect(url_for('managerLogin'))
-	return render_template('managersignup.html', form=form)
-
-#tenant signup
-@app.route('/tenantsignup', methods=['GET','POST'])
-def tenantSignup():
-	form = tenantSignupForm(request.form)
-	if request.method == 'POST' and form.validate():
-		unit = form.unit.data
-		first_name = form.first_name.data 
-		last_name = form.last_name.data
-		email = form.email.data
-		phone_number = form.phone_number.data
-		password = sha256_crypt.encrypt(str(form.password.data))
+		return redirect(url_for('Login'))
+	return render_template('signup.html', form=form)
 
 
-		
-		#create cursor
-		cur = mysql.connection.cursor()
-
-		# Execute query
-		cur.execute("INSERT INTO tenant (unit_id, first_name, last_name, email, phone_number, password)VALUES (%s, %s, %s, %s, %s, %s)",(
-			unit, first_name, last_name, email, phone_number, password))
-	
-
-		#commit to the database
-		mysql.connection.commit()
-
-		#close connection
-		cur.close()
-
-
-		flash("Sign successful!", "success")
-		return redirect(url_for('tenantLogin'))
-	return render_template('tenantsignup.html', form=form)
-
-
-
-
-#manager login 
-@app.route('/managerlogin', methods=['GET','POST'])
-def managerLogin():
+@app.route('/login', methods=['GET','POST'])
+def Login():
 	if session.get('logged_in'):
 		flash("You are already logged in",'warning')
-		return redirect(url_for('index'))
-	form = managerLoginForm(request.form)
+		return redirect(url_for('Dashboard'))
+	form = LoginForm(request.form)
 	if session.get('logged_in'):
 		redirect(url_for('index'))
 	if request.method == 'POST' and form.validate():
@@ -132,7 +95,7 @@ def managerLogin():
 		cur = mysql.connection.cursor()
 
 		#get user by email 
-		result = cur.execute("SELECT * FROM tenant_manager WHERE email = %s", [email])
+		result = cur.execute("SELECT * FROM users WHERE email = %s", [email])
 
 		if result > 0:
 
@@ -144,83 +107,44 @@ def managerLogin():
 			if sha256_crypt.verify(password_candidate,password):
 				#passed
 					session['logged_in']= True
-					#name = cur.execute("SELECT first_name FROM tenant_manager WHERE email = %s", [email])
-					name = cur.execute("SELECT * FROM tenant_manager WHERE email = %s", [email])
-
-
+					name = cur.execute("SELECT first_name FROM users WHERE email = %s", [email])
 					name = cur.fetchall()
-					session['mgr_id']= name[0]['mgr_id']
+					# session['mgr_id']= name[0]['mgr_id']
 					session['name'] = name[0]['first_name']
 
-					flash('You are now logged in', 'success')
-					return redirect(url_for('Dashboard'))
+					account_type = cur.execute("SELECT account FROM users WHERE email = %s", [email])
+					if account_type > 0:
+						data = cur.fetchall()
+						account = data[0]['account']
+						if account == "RM":
+							session["RM"] = session['name']
+							flash('Welcome to your Tenant Manager account','success')
+							return redirect(url_for('Dashboard'))
 
-			else:
-
-				error= 'Invalid Login credentials'
-				return render_template('managerlogin.html', error=error, form=form)
-
-			#close connection 
-			cur.close()   
-
-		else: 
-			error = 'Email not found'
-			return render_template('managerlogin.html', error=error, form=form)
-
+						elif account == "T":
+							session["T"] = session['name']
+							flash('Welcome to your tenant account','success')
+							return redirect(url_for('Dashboard'))
+						else:
+							session["Admin"] = session['name']
+							flash('Welcome to your Admin portal','success')
+							return redirect(url_for('Dashboard'))
 			
-	return render_template ('managerlogin.html', form=form)
-
-#tenant login 
-@app.route('/tenantlogin', methods=['GET','POST'])
-def tenantLogin():
-	if session.get('logged_in'):
-		flash("You are already logged in",'warning')
-		return redirect(url_for('index'))
-	form = managerLoginForm(request.form)
-	if session.get('logged_in'):
-		redirect(url_for('index'))
-	if request.method == 'POST' and form.validate():
-		email = form.email.data 
-		password_candidate = form.password.data
-
-		#create cursor 
-		cur = mysql.connection.cursor()
-
-		#get user by email 
-		result = cur.execute("SELECT * FROM tenant WHERE email = %s", [email])
-
-		if result > 0:
-			#get first one with required credentials 
-			data = cur.fetchone()
-			password = data ['password']
-
-		#compare passwords 
-			if sha256_crypt.verify(password_candidate, password):
-				#passed
-					session['logged_in']= True
-					name = cur.execute("SELECT * FROM tenant WHERE email = %s", [email])
-					name = cur.fetchall()
-					session['ten_id']= name[0]['ten_id']
-					session['name'] = name[0]['first_name']
-					flash('You are now logged in', 'success')
-					return redirect(url_for('Dashboard'))
-
 
 			else: 
-				flash("wrong credentials")
 				error = 'INVALID LOGIN CREDENTIALS'
-				return render_template('tenantlogin.html', error=error, form=form)
- 				 
-			cur.close()  
+				return render_template('Login.html', error=error, form=form)
+	 				#app.logger.info("PASSWORD NOT MATCHED!")
+				#close connection 
+				cur.close()   
 
-		else:
-			error = 'Email not found'
-			return render_template('tenantlogin.html', error=error, form=form)
+		#else: 
+			#error = 'USER NOT FOUND!'
+			#return render_template('login.html')
 
-	return render_template ('tenantlogin.html', form=form)
+	return render_template ('Login.html', form=form)
 
 
-#logout  
 @app.route('/logout')
 def logout ():
 	session.clear()
@@ -230,9 +154,9 @@ def logout ():
 # Dashboard route
 @app.route('/Dashboard')
 def Dashboard():
-	if session.get('mgr_id'):
+	if session.get('RM'):
 		return render_template('RMdashboard.html')
-	elif session.get('ten_id'):
+	elif session.get('T'):
 		return render_template('Tdashboard.html')
 	elif session.get('Admin'):
 		return render_template('admindashboard.html')
@@ -241,6 +165,42 @@ def Dashboard():
 		return redirect(url_for('home'))
 	flash("You are not logged in, Kindly log in first", 'danger')
 	return redirect(url_for('home'))
+
+#manager profile 
+@app.route('/managerprofile', methods=['GET', 'POST'])
+def managerProfile():
+	#how do we add session user?
+	form = ManagerForm(request.form)
+	if request.method == 'POST' and form.validate():
+		email = form.email.data
+		phone = form.phone.data
+
+
+		try:
+			#create cursor
+			cur = mysql.connection.cursor()
+
+			# Execute query
+			cur.execute("INSERT INTO tenant_manager (work_email, work_phone, user_id)VALUES (%s, %s, %s)",(
+				email, phone, session['user_id']))
+		
+
+			#commit to the database
+			mysql.connection.commit()
+			
+		except Exception as e:
+			flash( 'update error!: {}', format(e))
+			return render_template('managerprofile.html', form = form)
+			
+		finally:
+			#close connection
+			cur.close()
+
+
+		flash("profile update successful!", "success")
+		return redirect(url_for('Dashboard'))
+	return render_template('managerprofile.html', form=form)
+
 
 # Manager to add new property 
 @app.route('/propertyform', methods=['GET', 'POST'])
@@ -414,6 +374,42 @@ def Listed():
 
 
 	return render_template('tolet.html')
+
+#tenant profile 
+@app.route('/renterprofile', methods=['GET', 'POST'])
+def renterProfile():
+	#how do we add session user?
+	form = TenantForm(request.form)
+	if request.method == 'POST' and form.validate():
+		proof_document = form.proof_document.data
+		document_number = form.document_number.data
+
+
+		try:
+			#create cursor
+			cur = mysql.connection.cursor()
+
+			# Execute query
+			cur.execute("INSERT INTO renters (user_id, id_proof_document, id_proof_doc_no)VALUES (%s, %s, %s)",(
+				session['user_id'], proof_document, document_number))
+		
+
+			#commit to the database
+			mysql.connection.commit()
+			
+		except Exception as e:
+			flash( 'update error!: {}', format(e))
+			return render_template('managerprofile.html', form = form)
+			
+		finally:
+			#close connection
+			cur.close()
+
+
+		flash("profile update successful!", "success")
+		return redirect(url_for('Dashboard'))
+	return render_template('managerprofile.html', form=form)
+
 
 if __name__=="__main__":
 	app.run(debug=True)
