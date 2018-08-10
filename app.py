@@ -22,11 +22,8 @@ mysql = MySQL(app)
 
 #home page 
 
-@app.route('/')
-def home():
-	return render_template ("index.html")
 
-@app.route('/home')
+@app.route('/')
 def index():
 	return render_template ("index.html")
 
@@ -107,26 +104,26 @@ def Login():
 			if sha256_crypt.verify(password_candidate,password):
 				#passed
 					session['logged_in']= True
-					name = cur.execute("SELECT first_name FROM users WHERE email = %s", [email])
+					name = cur.execute("SELECT * FROM users WHERE email = %s", [email])
 					name = cur.fetchall()
-					# session['mgr_id']= name[0]['mgr_id']
-					session['name'] = name[0]['first_name']
+					session['user_id']= name[0]['user_id']
+					
 
 					account_type = cur.execute("SELECT account FROM users WHERE email = %s", [email])
 					if account_type > 0:
 						data = cur.fetchall()
 						account = data[0]['account']
 						if account == "RM":
-							session["RM"] = session['name']
+							session["RM"] = name[0]['first_name']
 							flash('Welcome to your Tenant Manager account','success')
 							return redirect(url_for('Dashboard'))
 
 						elif account == "T":
-							session["T"] = session['name']
+							session["T"] = name[0]['first_name']
 							flash('Welcome to your tenant account','success')
 							return redirect(url_for('Dashboard'))
 						else:
-							session["Admin"] = session['name']
+							session["Admin"] = name[0]['first_name']
 							flash('Welcome to your Admin portal','success')
 							return redirect(url_for('Dashboard'))
 			
@@ -205,7 +202,7 @@ def managerProfile():
 # Manager to add new property 
 @app.route('/propertyform', methods=['GET', 'POST'])
 def addProperty():
-	if session.get('mgr_id'):
+	if session.get('user_id'):
 		
 		form =propertyForm(request.form)
 		if request.method == 'POST' and form.validate():
