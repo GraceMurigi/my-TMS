@@ -82,8 +82,6 @@ def Login():
 		flash("You are already logged in",'warning')
 		return redirect(url_for('Dashboard'))
 	form = LoginForm(request.form)
-	if session.get('logged_in'):
-		redirect(url_for('index'))
 	if request.method == 'POST' and form.validate():
 		email = form.email.data 
 		password_candidate = form.password.data
@@ -209,7 +207,7 @@ def addProperty():
 			name = form.name.data
 			address = form.address.data
 			units = form.units.data
-			description = form.description.data
+			print("hi")
 			#manager = form.manager.data
 			try:
 				#create cursor
@@ -217,8 +215,8 @@ def addProperty():
 				
 
 				# Execute query
-				cur.execute("INSERT INTO rental_properties (name, address, units, description, mgr_id)VALUES (%s, %s, %s, %s, %s)",(
-					name, address, units, description, session['mgr_id']))
+				cur.execute("INSERT INTO property (name, address, units_managed, manager)VALUES (%s, %s, %s, %s)",(
+					name, address, units, session['user_id']))
 	
 
 				#commit to the database
@@ -238,13 +236,13 @@ def addProperty():
 
 @app.route('/viewproperty', methods=['GET', 'POST'])
 def myProperty():
-	if session.get('mgr_id'):
+	if session.get('user_id'):
 		try:
 			cur = mysql.connection.cursor()
 			print('no error')
-			#get user by email 
-			# result = cur.execute("SELECT * FROM rental_properties WHERE manager_id = %s", (session['mgr_id'], ))
-			cur.execute("SELECT * FROM rental_properties WHERE mgr_id = %s", (session['mgr_id'], ))
+			#get properties by using his user_id in the property table
+			
+			cur.execute("SELECT * FROM property WHERE manager = %s", (session['user_id'], ))
 
 			# if result > 0:
 			# 	flash("Yeepy some data exists")
@@ -269,17 +267,19 @@ def addUnits(ren_id):
 		
 	form =unitsForm(request.form)
 	if request.method == 'POST' and form.validate():
-		unit_id = form.unit_id.data
+		unit_name = form.unit_name.data
+		is_available = form.is_available.data
+		is_reserved = form.is_reserved.data
 		features = form.features.data
-		vacancy = form.vacancy.data
+		
 		try:
 			#create cursor
 			cur = mysql.connection.cursor()
 			
 
 			# Execute query
-			cur.execute("INSERT INTO unit (unit_id, ren_id, features, status)VALUES (%s, %s, %s, %s)",(unit_id,ren_id, 
-				features, vacancy))
+			cur.execute("INSERT INTO units (property, unit_name, features, is_available, is_reserved)VALUES (%s, %s, %s, %s, %s)",
+				(ren_id, unit_name, features, is_available, is_reserved))
 
 			print("working")
 			#commit to the database
@@ -359,7 +359,7 @@ def myTenants():
 @app.route ('/vacantunits')
 def vacantunits():
 	cur = mysql.connection.cursor()
-	cur.execute("SELECT * FROM unit WHERE status = 'vacant' " )
+	cur.execute("SELECT * FROM units WHERE is_available = 'N' " )
 	data = cur.fetchall()
 	cur.close()
 

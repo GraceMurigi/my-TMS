@@ -119,9 +119,35 @@
 				</div>
 				</div>
 				<div class="col-md-10 dashboard-cover">
-									<div class="admin-pic">
-						<img src="../static/images/admin.jpg">
-					</div>
+												
+		{% if data %}
+				  {% for rows in data %}
+				    <div class="vacantunits">
+				    {{rows['unit_id']}}
+				    {{rows['unit_name']}}
+				      {{rows['features']}}
+				      {{rows['units_managed']}}
+				      
+
+
+				<div class="vacant-buttons">
+						<a href="/viewunits/{{rows['id']}}" class="btn button-success">Book Unit</a>
+
+						<a href="/unitsform/{{rows['id']}}" class="btn button-success">View details</a>
+
+                		
+				</div>
+                    </div>
+				  {% endfor %}
+		{% else %}
+		<div>
+			sorry there are no vacant rooms at the moment
+		</div>
+		{% endif %}
+
+
+				</tbody>
+			</table>
 				</div>
 			</div>
 		</div>

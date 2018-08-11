@@ -24,7 +24,7 @@ class User(object):
 		login = False
 		return login
 
-class Landlord(User):
+class Tenant_Manager(User):
 	"""docstring for Landloard with admin priviledges
 
 	"""

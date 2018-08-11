@@ -33,15 +33,15 @@ class propertyForm(Form):
 		validators.DataRequired()])
 	units = StringField('Number of Units', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
-	description = StringField('Other details', [validators.Length(min=1, max=200),
-		validators.DataRequired()])
+	
 
 class unitsForm(Form):
 	unit_name = StringField('Unit Name:', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
 	features = TextAreaField('Unit Features:',[validators.Length(min=1, max= 500),
 		validators.DataRequired()])
-
+	is_available = SelectField("Occupied",  choices =[('N','No'),('Y','Yes')])
+	is_reserved = SelectField("Occupied",  choices =[('N','No'),('Y','Yes')])
 class ManagerForm(Form):
 	email = StringField('Work Email:', [validators.Email(), validators.DataRequired()])
 	phone = StringField('Work Telephone Number:', [validators.Length(min=1, max=200),

@@ -6,13 +6,15 @@ body{
     line-height: 1.5;
     color: #0F1626;
     
-    background-color: #eee ;
+    background-color: #fff ;
 }
 
 table{
 
       border-collapse: collapse;
       width: 100%;
+      position: relative;
+      background-color: #ecebf8cc !important;
 }
 
 table, th, td {
@@ -133,7 +135,7 @@ background-color: rgba(4, 31, 59, 0.7);
   color: aliceblue;
 }
 .button-success{
-	background: rgb(12, 14, 21);
+	background: rgb(94, 231, 59);
     border-radius: 2px;
     width: 110px;
     height: 40px;
@@ -150,15 +152,11 @@ background-color: rgba(4, 31, 59, 0.7);
 
 
 .rentals-screen{
-    background-color: rgba(114, 120, 14, 0.44);
-    width: 45%;
-    margin: 20px auto;
-    border: 1px solid rgba(54, 149, 70, 0.37);
-    border-radius: 24px;
-    padding: 30 px;
-        padding-right: 30px;
-        padding-bottom: 30px;
-        padding-left: 30px;
+   background-color: rgba(135, 206, 235, 0.54);
+width: 45%;
+margin: 21px auto;
+border: 1px solid rgba(54, 149, 70, 0.37);
+border-radius: 4px;
 
 }
 .signup-screen{
@@ -187,6 +185,28 @@ width: 200px !important;
 a:hover{
   text-decoration: none;
   cursor: pointer;
+  border: none;
+}
+.vacantunits{
+  background-color: #0f1626b3;
+
+position: relative;
+
+width: 33%;
+
+min-height: 250px;
+}
+.vacant-buttons{
+    position: absolute;
+    height: 60px;
+    background-color: rgb(85, 132, 255);
+    bottom: 0;
+    width: 100%;
+    padding: 12px;
+
+}
+.vacant-buttons a{
+
 }
 .sign-up h1{
   color: #03ffed;
@@ -199,6 +219,20 @@ display: block
 }
 input.submit{
   cursor: pointer;
+
+margin: 10px auto;
+
+    margin-right: auto;
+
+background: brown;
+
+border: none;
+
+border-radius: 2px;
+
+padding: 10px;
+
+color: #fff;
 }
 
 }
@@ -216,6 +250,7 @@ input.submit{
     border-radius: 4px;
     padding: 30px;
     text-align: center;
+    border:1px solid #eee;
 }
 *, ::after, ::before {
 
@@ -233,6 +268,7 @@ color: #110c0c;
 .login-form {
 text-align: center;
 margin-top: -20px;
+position: relative;
 }
 
 .form-group {
@@ -243,13 +279,22 @@ margin-top: -20px;
   margin: 10px;
 }
 .form-group label{
-
+width: 125px;
+color: #fff;
 }
 .form-group input, .form-group select{
-	float: right;
-  width: 240px;
+	    width: 100%;
+    padding: 10px;
+    border-radius: 2px;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px;
+    border: navajowhite;
+    border: 2px solid #eee;
 
 }
+
 .drop{
 	display: block;
 	width: 80%;
