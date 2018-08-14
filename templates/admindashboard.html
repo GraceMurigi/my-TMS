@@ -32,7 +32,7 @@
 						</div>
 					</div>
 					</a>
-					<a href="{{url_for('managerProfile')}}">
+					<!-- <a href="{{url_for('managerProfile')}}">
 					<div class="dashboard-icon">
 						<i class=" fas fa-sliders-h"></i>
 						<div>
@@ -42,13 +42,13 @@
 							
 						</div>
 					</div>
-					</a>
+					</a> -->
 						<div class="dashboard-icon">
-							<i class="fas fa-stroopwafel"></i>
+							<i class="fa fa-users" aria-hidden="true"></i>
 						
 						<div>
-							<a href="{{url_for('myProperty')}}">
-								View My Properties
+							<a href="/users">
+								View Users
 								
 							</a>
 						</div>
@@ -57,21 +57,19 @@
 							
 						<i class="  fas fa-building"></i>
 						<div>
-							<a href="{{url_for('addProperty')}}">
-								Add New Property
+							<a href="#">
+								View all properties
 								
 							</a>
 						</div>
 					</div>
 					
-						<div class="dashboard-icon">
+					<!-- <div class="dashboard-icon">
 						<i class="fa fa-users" aria-hidden="true"></i>
 
 						<div>
 							<a href="#">
 								My Tenants
-							
-
 							</a>
 						</div>
 					</div>
@@ -86,15 +84,15 @@
 						</div>
 					</div>
 						<div class="dashboard-icon">
-						<!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
-						<i class="fas fa-cogs"></i>
+						<i class="fa fa-envelope" aria-hidden="true"></i> -->
+						<!-- <i class="fas fa-cogs"></i>
 						<div>
 							<a href="#">
 								Maintenance Requests
 								
 							</a>
 						</div>
-					</div>
+					</div> --> 
 					<div class="dashboard-icon logout">
 						<i class=" fas fa-sign-out-alt"></i>
 						<div>
@@ -111,15 +109,15 @@
 						<!-- <img src="../static/images/admin.jpg"> -->
 						<i class=" fas fa-user-alt"></i>
 						<div class="admin">
-							<h4>Welcome, {{session['name']}}</h4>
+							<h4>Welcome Admin, {{session['Admin']}}</h4>
 						</div>
 					</div> 
-					<a href="#">
+					<!-- <a href="#">
 					<button class="dashboard-button">
 						Getting started?<br> FAQs
 					</button>
 					</a>
-			<!-- 		<div class="manager-section">
+					<div class="manager-section">
 						<div class="rental-dashboard dashboard">
 						
 								<h5>My Properties</h5>
@@ -164,4 +162,4 @@
 	</div>
 </div>
 
-	{% endblock %}x
+	{% endblock %}

@@ -19,56 +19,24 @@
 			<div class="row">
 				<div class="col-md-2">
 					<div class="dashboard-side-menu">
-						
-				<!-- 	<div class="users-dashboard dashboard">
-						
-								<h5>Users</h5>
+
+						<a href="{{url_for('Listed')}}">
+							<div class="dashboard-icon">
+								<i class="fas fa-building"></i>
+							<div>	To Let	</div>
+							</div>
+						</a>
 							
-						<div class="descr">
-							
-							<span>
-							<button>
-								View Users
-							</button>
-							<button>
-								Add New Users
-							</button>
-							</span>
-						</div>
-					</div> -->
-					<a href="/">
-					<div class="dashboard-icon">
-						<i class="fas fa-sliders-h"></i>
-						
-						<div>
-							
-								Edit Your Profile
-								
-							
-						</div>
-					</div>
-					</a>
-					<a href="/vacantunits">
+				
+						<a href="{{url_for('Occupant'}}">
 						<div class="dashboard-icon">
-							<i class="fas fa-building"></i>
+							<i class="fas fa-home"></i>
+							
+							<div>Rented Unit</div>
+						</div>
+						</a>
+					
 						
-						<div>
-							
-								To Let
-								
-							
-						</div>
-					</div>
-					</a>
-						<!--<div class="dashboard-icon">
-						<i class="fab fa-buromobelexperte"></i>
-						<div>
-							<a href="#">
-								Vacate a House/Office
-								<i class="fas fa-broom"></i>
-							</a>
-						</div>
-					</div>-->
 					<a href="#">
 					<div class="dashboard-icon">
 						<i class="fas fa-calendar-alt"></i>
@@ -105,23 +73,20 @@
 						</div>
 					</div>
 				</a>
-					<!--<div class="side-menu">
-						<ul>
-							<li><a href="#">Homepage</a></li>
-							<li><a href="#">Homepage</a></li>
-							<li><a href="#">Homepage</a></li>
-							<li><a href="#">Homepage</a></li>
-							<li><a href="#">Homepage</a></li>
-							<li><a href="#">Homepage</a></li>
-							<li><a href="#">Homepage</a></li>
-						</ul>
-					</div>-->
+					
 				</div>
 				</div>
 				<div class="col-md-10 dashboard-cover">
-									<div class="admin-pic">
-						<img src="../static/images/admin.jpg">
+					<div class="admin-pic">
+						<i class=" fas fa-user-alt"></i>
+						<div class="admin">
+							<h4>Welcome, {{session['T']}}</h4>
+						</div>
 					</div>
+					<button class="dashboard-button">
+						New Here?<br> 
+						<a href="{{url_for('Learn')}}">Learn More</a>
+					</button>
 				</div>
 			</div>
 		</div>

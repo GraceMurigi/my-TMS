@@ -1,4 +1,4 @@
-from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, SelectField, IntegerField, validators
+from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, SelectField, IntegerField, FileField, MultipleFileField, validators
 from wtforms.validators import InputRequired, Email, Length
 #user sign up 
 class SignupForm(Form):
@@ -49,14 +49,25 @@ class ManagerForm(Form):
 	document_number = StringField('Identification Document Number:')
 
 	
-class TenantForm(Form):
+# class TenantForm(Form):
+# 	proof_document = SelectField('Identification Document:', choices=[('National ID', 'National ID Card'), ('Drivers License', 'Drivers License'),
+# 		('Passport','Passport'), ('Company Registration', 'Company Registration')]) 
+# 	document_number = StringField('Identification Document Number:', [validators.Length(min=5, max=20),
+# 		validators.DataRequired()])
+
+class bookingForm(Form):
+	unit_code = StringField ('Unit Code:', [validators.Length(min=1, max=20),
+		validators.DataRequired()])
 	proof_document = SelectField('Identification Document:', choices=[('National ID', 'National ID Card'), ('Drivers License', 'Drivers License'),
-		('Passport','Passport'), ('Company Registration', 'Company Registration')]) 
+		('Passport','Passport'), ('Company Registration', 'Company Registration Certificate')]) 
 	document_number = StringField('Identification Document Number:', [validators.Length(min=5, max=20),
 		validators.DataRequired()])
+	
 
-
-
+class BillForm(Form): 
+	invoice_number = StringField ('Invoice Number', [validators.Length(min=1, max=50),
+		valdators.DataRequired()])
+	invoive = MultipleFileField ('Upload Invoice',[validators.DataRequired()])
 
 
 

@@ -79,12 +79,12 @@
 					<div class="dashboard-icon">
 						<i class=" fas fa-money-bill-wave"></i>
 						<div>
-							<a href="#">
-								Send Invoice
-								
+							<a href="{{}url_for('UnitBill')}">
+								Send Invoice	
 							</a>
 						</div>
 					</div>
+					
 						<div class="dashboard-icon">
 						<!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
 						<i class="fas fa-cogs"></i>
@@ -114,11 +114,12 @@
 							<h4>Welcome, {{session['RM']}}</h4>
 						</div>
 					</div> 
-					<a href="#">
-					<button class="dashboard-button">
-						Getting started?<br> FAQs
-					</button>
-					</a>
+<!-- 					<a href="#">
+ -->					<button class="dashboard-button">
+						New Here?<br> 
+						<a href="{{url_for('Learn')}}">Learn More</a>
+						</button>
+					
 			<!-- 		<div class="manager-section">
 						<div class="rental-dashboard dashboard">
 						

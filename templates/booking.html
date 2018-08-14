@@ -3,18 +3,22 @@
 {% block body %}
 
 {% from "includes/_formhelpers.html" import render_field %}
-<form method="POST" action="/renterprofile">
+<form method="POST" action="/bookunit/{{unit_id}}">
 
 	<div class="signup">
 		<div class="signup-screen">
 			<div class="app-title">
-				<h4>Tenant Verfication Profile</h4>
+				<h4>Unit Booking Form </h4>
 			</div>
 
-			
+			<!-- <div class="form-group">
+				{{render_field(form.unit_code, class_="form_control", placeholder='Enter the Unit Code')}}
+
+			</div>
+ -->
 			<div class="form-group">
 
-				{{render_field(form.proof_document, class_="form_control", placeholder='Select type of ID document')}}
+				{{render_field(form.proof_document, class_="form_control", )}}
 
 			</div>
 
@@ -25,7 +29,7 @@
 			
 			
 			<div class="form-group">
-				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+				<input class="submit" type="submit" class"btn btn-primary" value="Send">
 			</div>
 
 

@@ -123,15 +123,16 @@
 		{% if data %}
 				  {% for rows in data %}
 				    <div class="vacantunits">
-				    {{rows['unit_id']}}
-				    {{rows['unit_name']}}
+				    <!-- {{rows['unit_id']}} -->
+				    <!-- {{rows['unit_name']}} -->
 				      {{rows['features']}}
-				      {{rows['units_managed']}}
+				      <!-- {{rows['units_managed']}} -->
 				      
 
-
 				<div class="vacant-buttons">
-						<a href="/viewunits/{{rows['id']}}" class="btn button-success">Book Unit</a>
+<!-- 						<a href="/viewunits/{{rows['id']}}" class="btn button-success">Book Unit</a>
+ -->					<a href="/renterprofile" class="btn button-success">Book Unit</a>
+
 
 						<a href="/unitsform/{{rows['id']}}" class="btn button-success">View details</a>
 

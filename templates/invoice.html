@@ -7,10 +7,10 @@
 
 
 <h4 class="welcome-login">
-	 Login 
+	 Send Invoice
 </h4>
 <div class="login-form">
-	<form method="POST" action="/login">
+	<form method="POST" action="/sendinvoice">
 		<div class="login">
 			<div class="login-screen">
 				<div class="app-title">
@@ -20,10 +20,10 @@
 				<div class="login-form">
 				
 
-				<div class=form-group> {{ form.email(placeholder = "Enter Email", class="input") }}</div>
-    			<div class=form-group> {{ form.password(placeholder = 'password', class="input") }}</div>
+				<div class=form-group> {{ form.invoice_number(placeholder = "Enter invoice number", class="input") }}</div>
+    			<div class=form-group> {{ form.invoice}}</div>
     			<div class="form-group">
-				<input class="submit" type="submit" class"btn btn-primary" value="Submit">
+				<input class="submit" type="submit" class"btn btn-primary" value="Send">
 				</div>
 				</div> 
 				<div class="clear"></div> 
@@ -34,14 +34,6 @@
 
 		                                                                       
 	</form>
-</div>
-<div class="sign-up">
-
-	<h1> New Here? 
-		<a href="/signup">
-		<button class='signup-button'>Signup</button>
-		</a>
-	</h1>
 </div>
 
 {% endblock %}

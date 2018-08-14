@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8">
+			<h2>
+				User List 
+				<button type="button" class="btn btn-success  pull-right" data-toggle="modal" data-target="/managers">All Rental Managers</button> 
+				<button type="button" class="btn btn-success pull-right" data-togge ="modal" data-target ="/tenants">All Tenants </button>
+			</h2>
+
+			<table border="5" cellpadding="10" cellspacing="10" style= "color: #fff;">
+<!-- 			<table class="table table-striped" style="color: #fff;">
+				 -->				
+				<tbody>
+
+
+                <tr>
+              <th>Signup ID</th>
+              <th>Account Type</th>
+              <th>First Name</th>
+              <th>Last Name </th>
+              <th>Email Address</th>
+              <th>Phone Number</th>
+              <th>Signup Date </th>
+
+
+
+
+
+{% if data %}
+          </tr>
+				  {% for rows in data %}
+				    <tr>
+				    	<td>{{rows['user_id']}}</td>
+				    	<td>{{rows['account']}}</td>
+				      	<td>{{rows['first_name']}}</td>
+				      	<td>{{rows['last_name']}}</td>
+				      	<td>{{rows['email']}}</td>
+				      	<td>{{rows['phone_number']}}</td>
+				      	<td>{{rows['signup_date']}}</td>
+
+
+				    <td>
+
+                <a href="/deleteuser" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure you want to delete this record?')">Delete User</a>
+
+                    </td>
+				    </tr>
+				  {% endfor %}
+				  there must be some data somewhere
+
+{% endif %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+{% endblock%}

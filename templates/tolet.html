@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="col-md-12 dashboard-cover">
+												
+		{% if data %}
+				  {% for rows in data %}
+				    <div class="vacantunits">
+				    {{rows['unit_id']}}
+				    <!-- {{rows['unit_name']}} -->
+				    {{rows['features']}}
+				    <!-- {{rows['units_managed']}} -->
+				      
+
+
+				<div class="vacant-buttons">
+						<!-- <a href="/viewunits/{{rows['id']}}" class="btn button-success">Book Unit</a> -->
+						<a href="/unitsform/{{rows['id']}}" class="btn button-success">View details</a>
+
+						<a href="/bookunit/{{rows['unit_id']}}" class="btn button-success">Book Unit</a>
+
+						
+                		
+				</div>
+                    </div>
+				  {% endfor %}
+		{% else %}
+		<div>
+			sorry there are no vacant rooms at the moment
+		</div>
+		{% endif %}
+
+
+				</tbody>
+			</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
