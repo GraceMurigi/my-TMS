@@ -1,19 +1,19 @@
-from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, SelectField, IntegerField, FileField, MultipleFileField, validators
+from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, SelectField, IntegerField, FileField, validators
 from wtforms.validators import InputRequired, Email, Length
 #user sign up 
 class SignupForm(Form):
-	account = SelectField('Account Type:', choices =[('T','Tenant'), ('RM', 'Rental Manager')])
-	first_name = StringField('First Name:',[validators.Length(min=1, max= 50),
+	account = SelectField('Account Type', choices =[('T','Tenant'), ('RM', 'Rental Manager')])
+	first_name = StringField('First Name',[validators.Length(min=1, max= 50),
 		validators.DataRequired()])
-	last_name = StringField('Last Name:',[validators.Length(min=1, max= 50),
+	last_name = StringField('Last Name',[validators.Length(min=1, max= 50),
 		validators.DataRequired()])
-	email = StringField('Email:',[validators.Email(), validators.DataRequired()])
-	phone_number = StringField('Phone Number:', [validators.Length(min=5, max= 15),]) 
-	password = PasswordField('Password:',[
+	email = StringField('Email',[validators.Email(), validators.DataRequired()])
+	phone_number = StringField('Phone Number', [validators.Length(min=5, max= 15),]) 
+	password = PasswordField('Password',[
 		validators.DataRequired(),
 		validators.EqualTo('confirm',message ='Passwords do not match')
 		])
-	confirm = PasswordField('Confirm Password:')
+	confirm = PasswordField('Confirm Password')
 
 class LoginForm(Form):
 	email = StringField('Email',[validators.Email(), validators.DataRequired()])
@@ -21,8 +21,8 @@ class LoginForm(Form):
 
 #maintenace form 
 class maintenaceForm(Form):
-	maintenance = SelectField('Maintenance Type:', choices =[('P','Plumbing'), ('F', 'Flooring'),('R','Roofing'),('P','Painting'),('O','Other')])
-	description = TextAreaField ('Description:',[validators.Length(min=1, max= 200),
+	maintenance = SelectField('Maintenance Type', choices =[('P','Plumbing'), ('F', 'Flooring'),('R','Roofing'),('P','Painting'),('O','Other')])
+	description = TextAreaField ('Description',[validators.Length(min=1, max= 200),
 		validators.DataRequired()])
 	
 class propertyForm(Form):
@@ -36,17 +36,17 @@ class propertyForm(Form):
 	
 
 class unitsForm(Form):
-	unit_name = StringField('Unit Name:', [validators.Length(min=1, max=200),
+	unit_name = StringField('Unit Name', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
-	features = TextAreaField('Unit Features:',[validators.Length(min=1, max= 500),
+	features = TextAreaField('Unit Features',[validators.Length(min=1, max= 500),
 		validators.DataRequired()])
 	is_available = SelectField("Occupied",  choices =[('N','No'),('Y','Yes')])
 	is_reserved = SelectField("Occupied",  choices =[('N','No'),('Y','Yes')])
 class ManagerForm(Form):
-	email = StringField('Work Email:', [validators.Email(), validators.DataRequired()])
-	phone = StringField('Work Telephone Number:', [validators.Length(min=1, max=200),
+	email = StringField('Work Email', [validators.Email(), validators.DataRequired()])
+	phone = StringField('Work Telephone Number', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
-	document_number = StringField('Identification Document Number:')
+	document_number = StringField('Identification Document Number')
 
 	
 # class TenantForm(Form):
@@ -56,18 +56,18 @@ class ManagerForm(Form):
 # 		validators.DataRequired()])
 
 class bookingForm(Form):
-	unit_code = StringField ('Unit Code:', [validators.Length(min=1, max=20),
+	unit_code = StringField ('Unit Code', [validators.Length(min=1, max=20),
 		validators.DataRequired()])
-	proof_document = SelectField('Identification Document:', choices=[('National ID', 'National ID Card'), ('Drivers License', 'Drivers License'),
+	proof_document = SelectField('Identification Document', choices=[('National ID', 'National ID Card'), ('Drivers License', 'Drivers License'),
 		('Passport','Passport'), ('Company Registration', 'Company Registration Certificate')]) 
-	document_number = StringField('Identification Document Number:', [validators.Length(min=5, max=20),
+	document_number = StringField('Identification Document Number', [validators.Length(min=5, max=20),
 		validators.DataRequired()])
 	
 
 class BillForm(Form): 
 	invoice_number = StringField ('Invoice Number', [validators.Length(min=1, max=50),
-		valdators.DataRequired()])
-	invoive = MultipleFileField ('Upload Invoice',[validators.DataRequired()])
+		validators.DataRequired()])
+	invoive = FileField('Upload Invoice',[validators.DataRequired()])
 
 
 

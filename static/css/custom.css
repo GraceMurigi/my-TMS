@@ -6,6 +6,10 @@ body{
     color: #0F1626; 
     background-color: #fff ;
 }
+h1 {
+  font-family: monospace;
+
+}
 a {  
     color: #fff;
     text-decoration: blink;
@@ -161,37 +165,51 @@ background-color: rgba(4, 31, 59, 0.7);
 	width: 60%;
 	text-align: center;
 }
+
 .signup-screen .help-inline{
 	color: red;
     margin-left: 180px;
 }
 
+.rentals-screen {
 
-.rentals-screen{
-   background-color: rgba(135, 206, 235, 0.54);
-width: 45%;
-margin: 21px auto;
-border: 1px solid rgba(54, 149, 70, 0.37);
-border-radius: 4px;
-
+    background-color: rgb(155, 74, 23);
+    width: 50%;
+    margin: 10px auto;
+        margin-top: 10px;
+        margin-right: auto;
+        margin-bottom: 10px;
+        margin-left: auto;
+    border: 1px ;
+    border-radius: 0px;
 }
+
 .signup-screen{
-	background-color: rgba(114, 120, 14, 0.44);
-	width: 45%;
-	margin: 20px auto;
-	border: 1px solid rgba(54, 149, 70, 0.37);
-	border-radius: 24px;
+	background-color: rgb(90, 87, 87);
+	width: 46%;
+	margin: 7px auto;
+	border-radius: 0px;
 	padding: 30	px;
         padding-right: 30px;
         padding-bottom: 30px;
         padding-left: 30px;
 }
+.left-input,.right-input{
+  width: 48%;
+  display: inline;
+}
+.left-input{
+  float: left;
+}
+.right-input{
+  float: right;
+}
+  .left-input input,.right-input input{
+  width: 200px;
+  display: inline;
+}
 .submit{
-
-
-margin-right: 100px !important;
-
-width: 200px !important;
+width: 120px !important;
 
 }
 .clear{
@@ -229,7 +247,7 @@ margin-bottom: 15px;
 
 }
 .sign-up h1{
-  color: #03ffed;
+  color: #000;
   text-align: center;
   font-size: 20px;
 }
@@ -237,7 +255,7 @@ margin-bottom: 15px;
   text-align: center;
   display: block
 }
-input.submit{
+.sign-up a button,input.submit{
   cursor: pointer;
   margin: 10px auto;
   margin-right: auto;
@@ -246,6 +264,7 @@ input.submit{
   border-radius: 2px;
   padding: 10px;
   color: #fff;
+  width: 120px;
 }
 
 }
@@ -268,9 +287,7 @@ input.submit{
 *, ::after, ::before {
 
     box-sizing: border-box; 
-    color:rgb(0,0,0);
-
-
+    color:rgba(13, 13, 14, 0.9);
 }
  
 signup-button{
@@ -279,7 +296,7 @@ signup-button{
 
 .app-title {
 text-align: center;
-color: #110c0c;
+color: #000;
 }
  
 .login-form {
@@ -291,26 +308,35 @@ position: relative;
 .form-group {
 
 }
-.form-group label, .form-group input{
-	display: inline-block;
-  margin: 10px;
-}
 .form-group label{
-width: 125px;
-color: #fff;
+  display: inline-block;
+  margin: 10px;
+
+} 
+.form-group input{
+	display: inline-block;
+  
+  border: 10px;
 }
-.form-group input, .form-group select{
-	    width: 100%;
+
+.form-group label{
+width: 80px;
+color: rgb(0,0,0);
+}
+
+.form-group input, .form-group select {
+
+    width: 60%;
     padding: 10px;
-    border-radius: 2px;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
-        border-bottom-left-radius: 2px;
-    border: navajowhite;
-    border: 2px solid #eee;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    margin: 0px auto;
+    display: inline-block;
 
 }
+
 
 .drop{
 	display: block;
@@ -1066,6 +1092,9 @@ padding: 11px;
 border-radius: 4px;
 width: 42%;
 margin: 137px auto 0 auto;
+}
+.fas fa-phone {
+  color:#fff;
 }
 
 /*FAQs pages */

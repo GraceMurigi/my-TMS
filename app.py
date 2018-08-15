@@ -182,8 +182,7 @@ def addProperty():
 			name = form.name.data
 			address = form.address.data
 			units = form.units.data
-			print("hi")
-			#manager = form.manager.data
+			
 			try:
 				#create cursor
 				cur = mysql.connection.cursor()
@@ -200,7 +199,7 @@ def addProperty():
 				#close connection
 
 			except Exception as e:
-				flash("Sorry! property name already exists. Please create a unque name ", "warning")
+				flash("Sorry! property name already exists. Please create a unique name ", "warning")
 
 			
 			finally:
@@ -262,14 +261,14 @@ def addUnits(ren_id):
 			#close connection
 
 		except Exception as e:
-			flash("Sorry, please fill in all fields", "warning")
+			flash("Sorry, please fill out all fields", "warning")
 			print("error")
 			print(e)
 		
 		finally:
 			cur.close()
 		
-		return redirect(url_for('addUnits', ren_id = ren_id))
+		return redirect(url_for('viewUnits', ren_id = ren_id))
 	return render_template('addunit.html', form=form, ren_id = ren_id)
 
 #view units 
@@ -279,22 +278,21 @@ def viewUnits(ren_id):
 		try:
 			cur = mysql.connection.cursor()
 			print('no error')
-			#get user by email 
-			result = cur.execute("SELECT * FROM unit WHERE property = %s", (ren_id, ))
+			cur.execute("SELECT * FROM unit WHERE property = %s", (ren_id, ))
 
-			if result > 0:
-				flash("Yeepy some data exists")
-				data = cur.fetchall()
-			else:
-				flash("Sorry no data for the manager")
+			# if result > 0:
+			# 	flash("Yeepy some data exists")
+			data = cur.fetchall()
+			# else:
+			# 	flash("Sorry no data for the manager")
 		except Exception as e:
-			flash('No units to show!')
+			flash('No units to display')
 			print(e)
-			print('error aomewhee')
+			print('error somewhere')
 			
 		finally:
 			cur.close()
-		return render_template('unitlist.html', data = data, ren_id = ren_id)
+			return render_template('unitlist.html', data = data, ren_id = ren_id)
 	return redirect(url_for('Login'))
 
 #view maintenance requests 
@@ -375,12 +373,12 @@ def UnitBill():
 		finally:
 			cur.close()
 		
-		return redirect(url_for('Dashboard'))
+			return redirect(url_for('Dashboard'))
 	return render_template('invoice.html', form=form)
  
 #view payment history 
 @app.route('/paymentlog/<id>')
-def viewUnits(id):
+def paymentLog(id):
 	if session.get('user_id'):
 		try:
 			cur = mysql.connection.cursor()
@@ -442,7 +440,7 @@ def maintenance():
 #view pending bills 
 @app.route('/pendingbills')
 def myBill():
-	if session.get('id')
+	if session.get('id'):
 		cur = mysql.connection.cursor()
 		cur.execute("SELECT * FROM invoice WHERE tenant = %s", (session['id'], ))
 		data = cur.fetchall()
@@ -492,25 +490,25 @@ def UnitBooking(unit_id):
 
 			try:
 			#create cursor
-			cur = mysql.connection.cursor()
+				cur = mysql.connection.cursor()
 			
 			# Execute query
-			cur.execute("INSERT INTO unit_application (unit_id, id_proof_document, id_proof_doc_no) VALUES (%s, %s, %s)",
+				cur.execute("INSERT INTO unit_application (unit_id, id_proof_document, id_proof_doc_no) VALUES (%s, %s, %s)",
 				(unit_id, proof_document, document_number ))
 
-			print("working")
+				print("working")
 			#commit to the database
-			mysql.connection.commit()
-			flash('Booking application sent!', 'success')
-			#close connection
+				mysql.connection.commit()
+				flash('Booking application sent!', 'success')
+				#close connection
 
-		except Exception as e:
-			flash("Sorry, please fill in all fields", "warning")
-			print("error")
-			print(e)
+			except Exception as e:
+				flash("Sorry, please fill in all fields", "warning")
+				print("error")
+				print(e)
 		
-		finally:
-			cur.close()
+			finally:
+				cur.close()
 		
 		return redirect(url_for('Dashboard'))
 

@@ -20,17 +20,7 @@
 						</div>
 					</div>
 					</a>
-					<a href="{{url_for('managerProfile')}}">
-					<div class="dashboard-icon">
-						<i class=" fas fa-sliders-h"></i>
-						<div>
-							
-								Edit Your Profile
-								
-							
-						</div>
-					</div>
-					</a>
+					
 						<div class="dashboard-icon active">
 							<i class="fas fa-stroopwafel"></i>
 						
@@ -103,17 +93,17 @@
 	<div class="rentals">
 		<div class="rentals-screen">
 			<div class="app-title">
-				<h1>Add a Unit</h1>
+				<h4>Enter Unit Details</h4>
 			</div>
 
 			<!--showing input fields for account type, first name, last name, email, password 
 				and phonenumber-->
 	
 			<div class="form-group">
-				{{render_field(form.unit_name, class_="form_control")}}
+				{{render_field(form.unit_name, class_="form_control", placeholder ="Unit Name Must Be Unique")}}
 			</div>
 			<div class="form-group">
-				{{render_field(form.features, class_="form_control")}}
+				{{render_field(form.features, class_="form_control", placeholder ="e.g '3 Bedroom', 'Studio Apartment', e.t.c")}}
 			</div>
 			<div class="form-group">
 				{{render_field(form.is_available, class_="form_control")}}
