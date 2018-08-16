@@ -17,15 +17,17 @@
               <th>Property ID</th>
               <th>Features</th>
               <th>Status</th>
+              <th>Reserved</th>
 
 {% if data %}
           </tr>
 				  {% for rows in data %}
 				    <tr>
 				    	<td>{{rows['unit_id']}}</td>
-				    	<td>{{rows['ren_id']}}</td>
+				    	<td>{{ren_id}}</td>
 				      	<td>{{rows['features']}}</td>
-				      	<td>{{rows['status']}}</td>
+				      	<td>{{rows['is_available']}}</td>
+				      	<td>{{rows['is_reserved']}}</td>
 
 				    <td>
 

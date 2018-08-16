@@ -28,7 +28,7 @@ class maintenaceForm(Form):
 class propertyForm(Form):
 	name = StringField('Property name', [validators.Length(min=1, max=200),
 		validators.DataRequired()])
-	purpose = SelectField ('Property type', choices =[('residential','Residential'), ('commericial', 'Commercial')])
+	# purpose = SelectField ('Property type', choices =[('residential','Residential'), ('commericial', 'Commercial')])
 	address = TextAreaField('Address', [validators.Length(min=1, max= 200),
 		validators.DataRequired()])
 	units = StringField('Number of Units', [validators.Length(min=1, max=200),
@@ -56,8 +56,7 @@ class ManagerForm(Form):
 # 		validators.DataRequired()])
 
 class bookingForm(Form):
-	unit_code = StringField ('Unit Code', [validators.Length(min=1, max=20),
-		validators.DataRequired()])
+	
 	proof_document = SelectField('Identification Document', choices=[('National ID', 'National ID Card'), ('Drivers License', 'Drivers License'),
 		('Passport','Passport'), ('Company Registration', 'Company Registration Certificate')]) 
 	document_number = StringField('Identification Document Number', [validators.Length(min=5, max=20),

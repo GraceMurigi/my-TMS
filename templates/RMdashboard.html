@@ -1,116 +1,21 @@
-<!-- this dashboard should have an icons to:
 
-	add tenants, 
-	view payments, 
-	view requests, 
-	send payment reminder, 
-
-
-	these buttons don't have to work for now, 
-	-->
-
-	{% extends 'layout.html' %}
+{% from "includes/_formhelpers.html" import render_field %}
+	{% extends 'RMlayout.html' %}
 
 	{% block body %}
-	<div class="dash-bg">
-
-
-		<div class="container-fluid dashboard-body">
-			<div class="row">
-				<div class="col-md-2">
-					
-<div class=" dashboard-side-menu">
-					
-					<a href="/">
-					<div class="dashboard-icon active">
-						<i class=" fas fa-sliders-h"></i>
-						<div>
-							
-								Home
-								
-							
-						</div>
-					</div>
-					</a>
-					
-						<div class="dashboard-icon">
-							<i class="fas fa-stroopwafel"></i>
-						
-						<div>
-							<a href="{{url_for('myProperty')}}">
-								View My Properties
-								
-							</a>
-						</div>
-					</div>
-					<div class="dashboard-icon">
-							
-						<i class="  fas fa-building"></i>
-						<div>
-							<a href="{{url_for('addProperty')}}">
-								Add New Property
-								
-							</a>
-						</div>
-					</div>
-					
-						<div class="dashboard-icon">
-						<i class="fa fa-users" aria-hidden="true"></i>
-
-						<div>
-							<a href="#">
-								My Tenants
-							
-
-							</a>
-						</div>
-					</div>
-					
-					<div class="dashboard-icon">
-						<i class=" fas fa-money-bill-wave"></i>
-						<div>
-							<a href="{{url_for('UnitBill')}}">
-								Send Invoice	
-							</a>
-						</div>
-					</div>
-					
-						<div class="dashboard-icon">
-						<!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
-						<i class="fas fa-cogs"></i>
-						<div>
-							<a href="#">
-								Maintenance Requests
-								
-							</a>
-						</div>
-					</div>
-					<div class="dashboard-icon logout">
-						<i class=" fas fa-sign-out-alt"></i>
-						<div>
-							<a href="{{url_for('logout')}}">
-								Logout
-								
-							</a>
-						</div>
-				</div>
-			</div>
-				</div>
-				<div class="col-md-10 dashboard-cover">
+	
 					<div class="admin-pic">
-						<!-- <img src="../static/images/admin.jpg"> -->
+						
 						<i class=" fas fa-user-alt"></i>
 						<div class="admin">
 							<h4>Welcome, {{session['RM']}}</h4>
 						</div>
 					</div> 
-<!-- 					<a href="#">
- -->					<button class="dashboard-button">
+						<button class="dashboard-button">
 						New Here?<br> 
 						<a href="{{url_for('Learn')}}">Learn More</a>
-						</button>
-					
-			<!-- 		<div class="manager-section">
+						</button> <!----			
+			<div class="manager-section">
 						<div class="rental-dashboard dashboard">
 						
 								<h5>My Properties</h5>
@@ -148,11 +53,8 @@
 							</span>
 						</div>
 					</div>
-					</div> -->
+					</div>  -->
 					
-			</div>
-		</div>
-	</div>
-</div>
+			
 
 	{% endblock %}

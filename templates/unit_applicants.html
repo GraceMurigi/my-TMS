@@ -1,0 +1,58 @@
+	{% extends 'RMlayout.html' %}
+
+	{% block body %}
+
+
+			<table border="5" cellpadding="10" cellspacing="10" class="table table-bordred table-striped">
+<!-- 			<table class="table table-striped" style="color: #fff;">
+				 -->				
+				<tbody>
+
+
+                <tr>
+<!--               <th>Property ID</th>
+ -->          <th>Property name </th>
+ 			  <th>Unit name</th>
+ 			  <th>Applicant Name</th>
+ 			  <th>Applicant Document</th>
+              <th>User Email</th>
+              <th>User Contacts</th>
+             <th>Status</th>
+              
+
+{% if data %}
+          </tr>
+				  {% for rows in data %}
+				    <tr><!-- 
+				    	display unit_application.user_id, unit_application.unit_id, unit_application.id_proof_document, unit_application.id_proof_doc_no, unit_application.submit_date, units.unit_name, units.features, property.name, property.manager -->
+
+				    	<td>{{rows['name']}}</td>
+					    <td>{{rows['unit_name']}}</td>
+ 						<td>{{rows['first_name']}}  {{rows['last_name']}}</td>
+				      	<td>{{rows['id_proof_document']}}: {{rows['id_proof_doc_no']}}</td>
+				      	<td>{{rows['email']}}</td>
+				      	<td> +254{{rows['phone_number']}}</td>
+				      	<td>{{rows['status']}}</td>
+
+				      	
+				      	
+				      	
+				      
+
+
+				    <td>
+				<a href="/decline/{{rows['unit_id']}}" class="btn btn-warning" style="margin-bottom: 2px; font-size: 12px;">Decline</a>
+
+				<a href="/approve/{{rows['unit_id']}}" class="btn btn-success" style="font-size: 12px;">Approve</a>
+
+             
+
+                    </td>
+				    </tr>
+				  {% endfor %}
+				  
+
+{% endif %}
+				</tbody>
+			</table>
+	{% endblock %}

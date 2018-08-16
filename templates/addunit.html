@@ -1,91 +1,6 @@
-{% extends 'layout.html' %}
+{% extends 'RMlayout.html' %}
 
-{% block body %}
-
-{% from "includes/_formhelpers.html" import render_field %}
-		<div class="container-fluid dashboard-body">
-			<div class="row">
-				<div class="col-md-2">
-					
-<div class=" dashboard-side-menu">
-					
-					<a href="/">
-					<div class="dashboard-icon ">
-						<i class=" fas fa-sliders-h"></i>
-						<div>
-							
-								Home
-								
-							
-						</div>
-					</div>
-					</a>
-					
-						<div class="dashboard-icon active">
-							<i class="fas fa-stroopwafel"></i>
-						
-						<div class="">
-							<a href="{{url_for('myProperty')}}">
-								View My Properties
-								
-							</a>
-						</div>
-					</div>
-					<div class="dashboard-icon">
-							
-						<i class="  fas fa-building"></i>
-						<div>
-							<a href="{{url_for('addProperty')}}">
-								Add New Property
-								
-							</a>
-						</div>
-					</div>
-					
-						<div class="dashboard-icon">
-						<i class="fa fa-users" aria-hidden="true"></i>
-
-						<div>
-							<a href="#">
-								My Tenants
-							
-
-							</a>
-						</div>
-					</div>
-					
-					<div class="dashboard-icon">
-						<i class=" fas fa-money-bill-wave"></i>
-						<div>
-							<a href="#">
-								Send Invoice
-								
-							</a>
-						</div>
-					</div>
-						<div class="dashboard-icon">
-						<!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
-						<i class="fas fa-cogs"></i>
-						<div>
-							<a href="#">
-								Maintenance Requests
-								
-							</a>
-						</div>
-					</div>
-					<div class="dashboard-icon logout">
-						<i class=" fas fa-sign-out-alt"></i>
-						<div>
-							<a href="{{url_for('logout')}}">
-								Logout
-								
-							</a>
-						</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-10 dashboard-cover">
-					
+	{% block body %}
 		<div class="login-form">
 <form method="POST" action="/unitsform/{{ren_id}}">
 
@@ -125,7 +40,6 @@
 
 </form> 
 </div>
-</div>
-</div>
+
 
 {% endblock %}

@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.secret_key ="Whatdoyouthink123"
 #configure mysql
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_USER'] = 'griffin'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'tenant_management'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
@@ -186,7 +186,7 @@ def addProperty():
 			try:
 				#create cursor
 				cur = mysql.connection.cursor()
-				
+				print("all is good")
 
 				# Execute query
 				cur.execute("INSERT INTO property (name, address, units_managed, manager)VALUES (%s, %s, %s, %s)",(
@@ -200,7 +200,7 @@ def addProperty():
 
 			except Exception as e:
 				flash("Sorry! property name already exists. Please create a unique name ", "warning")
-
+				print(e)
 			
 			finally:
 				cur.close()
@@ -278,13 +278,13 @@ def viewUnits(ren_id):
 		try:
 			cur = mysql.connection.cursor()
 			print('no error')
-			cur.execute("SELECT * FROM unit WHERE property = %s", (ren_id, ))
+			result = cur.execute("SELECT * FROM units WHERE property = %s", (ren_id, ))
 
-			# if result > 0:
-			# 	flash("Yeepy some data exists")
-			data = cur.fetchall()
-			# else:
-			# 	flash("Sorry no data for the manager")
+			if result > 0:
+				flash("Yeepy some data exists")
+				data = cur.fetchall()
+			else:
+				flash("Sorry no data for the manager")
 		except Exception as e:
 			flash('No units to display')
 			print(e)
@@ -293,6 +293,33 @@ def viewUnits(ren_id):
 		finally:
 			cur.close()
 			return render_template('unitlist.html', data = data, ren_id = ren_id)
+	return redirect(url_for('Login'))
+#view property
+@app.route('/viewapplicants', methods=['GET', 'POST'])
+def unit_applicants():
+	if session.get('user_id'):
+		try:
+			cur = mysql.connection.cursor()
+			print('no error')
+			#get properties by using his user_id in the property table
+			
+			
+			cur.execute("SELECT unit_application.*, units.unit_id, units.unit_name, units.features, property.name, property.manager, users.email, users.phone_number, users.first_name, users.last_name FROM unit_application INNER JOIN units ON unit_application.unit_id=units.unit_id INNER JOIN property ON units.property=property.ren_id INNER JOIN users on unit_application.user_id=users.user_id")
+
+			# if result > 0:
+			# 	flash("Yeepy some data exists")
+			data = cur.fetchall()
+				# else:
+				# 	flash("Sorry, tenant manager data doesn't exist")
+
+		except Exception as e:
+			flash('Kindly add a property first')
+			print(e)
+			print('error somewhere')
+			
+		finally:
+			cur.close()
+			return render_template('unit_applicants.html', data = data)
 	return redirect(url_for('Login'))
 
 #view maintenance requests 
@@ -493,8 +520,8 @@ def UnitBooking(unit_id):
 				cur = mysql.connection.cursor()
 			
 			# Execute query
-				cur.execute("INSERT INTO unit_application (unit_id, id_proof_document, id_proof_doc_no) VALUES (%s, %s, %s)",
-				(unit_id, proof_document, document_number ))
+				cur.execute("INSERT INTO unit_application (user_id, unit_id, id_proof_document, id_proof_doc_no) VALUES (%s, %s, %s, %s)",
+				(session.get('user_id'), unit_id, proof_document, document_number ))
 
 				print("working")
 			#commit to the database
@@ -509,11 +536,60 @@ def UnitBooking(unit_id):
 		
 			finally:
 				cur.close()
-		
-		return redirect(url_for('Dashboard'))
+			return(redirect(url_for('Dashboard')))
+	return render_template('booking.html', form=form, unit_id = unit_id)
 
-	return render_template('booking.html', form=form)
+#approve a vacant unit application
+@app.route('/approve/<int:id>')
+def respond(id):
 
+	if session.get ('RM'):
+		cur = mysql.connection.cursor()
+		try:
+		# Execute query
+			cur.execute("UPDATE unit_application SET status = 'accepted' WHERE id = %s", (id, ));
+			cur.execute("INSERT INTO occupant (user_id, unit_id) VALUES (%s,%s)", (session.get('user_id'), id));
+			print("working")
+		#commit to the database
+			mysql.connection.commit()
+			flash('Successfully approved', 'success')
+			#close connection
+
+		except Exception as e:
+			flash("Sorry, There seemed to be an error", "warning")
+			print("error")
+			print(e)
+
+		finally:
+			cur.close()
+	
+	return(redirect(url_for('unit_applicants')))
+
+
+@app.route('/decline/<id>')
+def decline(id):
+
+	if session.get ('RM'):
+		cur = mysql.connection.cursor()
+		try:
+		# Execute query
+			cur.execute("UPDATE unit_application SET status = 'rejected' WHERE id = %s", (id, ))
+
+			print("working")
+		#commit to the database
+			mysql.connection.commit()
+			flash('Successfully Declined', 'warning')
+			#close connection
+
+		except Exception as e:
+			flash("Sorry, There seemed to be an error", "warning")
+			print("error")
+			print(e)
+
+		finally:
+			cur.close()
+	
+	return(redirect(url_for('unit_applicants')))
 
 #routes to admin dashboard	
 #view all users 		
@@ -538,10 +614,10 @@ def Managers():
 @app.route('/tenants', methods=['GET', 'POST'])
 def Tenants():
 	cur = mysql.connection.cursor()
-	cur.execute("SELECT * FROM users WHERE account = 'T' ORDER BY signup_date DESC" )
+	cur.execute("SELECT occupant.*, units.property, property.ren_id FROM occupant, property INNER JOIN units on units.property=property.ren_id WHERE property.manager = %s ", (session.get('user_id'), ) )
 	data = cur.fetchall()
 	cur.close()
-	return render_template('users.html')
+	return render_template('users.html', data= data)
 
 #delete a user
 @app.route('/delete/<string:user_id>', methods = ['GET'])
