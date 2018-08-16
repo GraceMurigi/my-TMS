@@ -30,96 +30,84 @@
 						<i class=" fas fa-sliders-h"></i>
 						<div>
 							
-							Rental Manager Home
+								Home
 								
 							
 						</div>
 					</div>
 					</a>
-					<a href="{{url_for('myProperty')}}">
+				
 						<div class="dashboard-icon">
-							<i class="fas fa-stroopwafel"></i>
+							<i class="fa fa-users" aria-hidden="true"></i>
 						
 						<div>
-							
-								View My Properties
+							<a href="/users">
+								View Users
 								
-							
+							</a>
 						</div>
 					</div>
-					</a>
-					<a href="{{url_for('addProperty')}}">
+					<div class="dashboard-icon">
+							<i class="fa fa-users" aria-hidden="true"></i>
+						
+						<div>
+							<a href="/vacantunits">
+								View Vacant Units
+								
+							</a>
+						</div>
+					</div>
 					<div class="dashboard-icon">
 							
 						<i class="  fas fa-building"></i>
 						<div>
-							
-								Add New Property
+							<a href="#">
+								View all properties
 								
-							
+							</a>
 						</div>
 					</div>
-					</a>
-					<a href="/tenants">
-						<div class="dashboard-icon">
+					
+					<!-- <div class="dashboard-icon">
 						<i class="fa fa-users" aria-hidden="true"></i>
 
 						<div>
-							
+							<a href="#">
 								My Tenants
-							
-
-						
+							</a>
 						</div>
 					</div>
-						</a>
-							<a href="/viewapplicants">
-						<div class="dashboard-icon">
-						<i class="fa fa-users" aria-hidden="true"></i>
-
-						<div>
-							
-								View Rental applications
-							
-
-						
-						</div>
-					</div>
-						</a>
-					<a href="{{url_for('UnitBill')}}">
+					
 					<div class="dashboard-icon">
 						<i class=" fas fa-money-bill-wave"></i>
 						<div>
-							
-								Send Invoice	
-							
+							<a href="#">
+								Send Invoice
+								
+							</a>
 						</div>
 					</div>
-					</a>
-							<a href="#">
 						<div class="dashboard-icon">
-						<!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
-						<i class="fas fa-cogs"></i>
+						<i class="fa fa-envelope" aria-hidden="true"></i> -->
+						<!-- <i class="fas fa-cogs"></i>
 						<div>
+							<a href="#">
 								Maintenance Requests
 								
-							
+							</a>
 						</div>
-					</div>
-					</a>
-					<a href="{{url_for('logout')}}">
+					</div> --> 
 					<div class="dashboard-icon logout">
 						<i class=" fas fa-sign-out-alt"></i>
 						<div>
-							
+							<a href="{{url_for('logout')}}">
 								Logout
-							
+								
+							</a>
 						</div>
 				</div>
-					
-							</a>
 			</div>
-				</div>
+			</div>
 				<div class="col-md-10 dashboard-cover">
 		{% from "includes/_formhelpers.html" import render_field %}
 		{% include 'includes/_messages.html' %}
@@ -140,4 +128,4 @@
 
 
 	</body>
-</html>
+</html>	
