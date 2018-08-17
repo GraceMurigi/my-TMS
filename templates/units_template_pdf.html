@@ -1,0 +1,55 @@
+
+
+<div class="col-md-12 dashboard-cover">
+												
+		
+				  <table>
+				  	<tbody>
+				  		<tr>
+				  		<th>unit id</th>
+				  		<th>unit type</th>
+				  		  <th>Unit Name</th>
+				  		<th>Availability</th>
+				    
+            
+              <th>Property Name</th>
+             
+              <th>Reserved</th>
+              <th>Managed by</th>
+
+{% if data %}
+          </tr>
+				  {% for rows in data %}
+				    <tr>
+				    	<td>{{rows['unit_id']}}</td>
+				    	<td>{{rows['features']}}</td>
+				    	<td>{{rows['unit_name']}}</td>
+				    	<td>{{rows['is_available']}}</td>
+				    	<td>{{rows['property']}}:{{rows['name']}}</td>
+				      	
+				      	
+				      	<td>{{rows['is_reserved']}}</td>
+				      	<td>{{session.get('user_id')}}</td>
+
+				    <td>
+						{% endfor %}
+                		
+				</tbody>
+			</table>
+				<a href="/users_report.pdf">
+				<button class="btn-success">
+					Generate PDF report
+				</button>
+			</a>  
+		{% else %}
+		<div>
+			sorry there are no vacant rooms at the moment
+		</div>
+		{% endif %}
+
+
+				
+				</div>
+			</div>
+		</div>
+	</div>

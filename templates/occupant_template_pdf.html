@@ -1,0 +1,47 @@
+{% extends 'layout.html'%}
+			<table border="5" cellpadding="10" cellspacing="10" style= "color: #000;">
+<!-- 			<table class="table table-striped" style="color: #fff;">
+				 -->				
+				<tbody>
+
+
+                <tr>
+              <th>Occupant ID</th>
+              <th>Account Type</th>
+              <th>First Name</th>
+              <th>Last Name </th>
+              <th>Email Address</th>
+              <th>Phone Number</th>
+              <th>Signup Date </th>
+
+
+</tr>
+
+
+{% if data %}
+          
+				  {% for rows in data %}
+				    <tr style="color: #000;">
+				    	<td style="color: #000">{{rows['id']}}</td>
+				    	<td>{{rows['unit_id']}}</td>
+				      	<td>{{rows['lease_period']}}</td>
+				      	<td>{{rows['user_id']}}</td>
+				      	<td>{{session['user_id']}}</td>
+				      	<td>{{rows['phone_number']}}</td>
+				      	<td style="color: #000;">{{rows['moved_in']}}</td>
+
+
+				    <td>
+
+
+                    </td>
+				    </tr>
+				  {% endfor %}
+				  
+{% else %}
+<p> 
+	Sorry you seem not to have any occupants/Tenants.
+</p>
+{% endif %}
+				</tbody>
+			</table>

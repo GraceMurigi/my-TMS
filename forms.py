@@ -1,5 +1,6 @@
-from wtforms import Form, BooleanField, StringField, TextAreaField, PasswordField, SelectField, IntegerField, FileField, validators
+from wtforms import Form, BooleanField, StringField, DateTimeField, TextAreaField, PasswordField, SelectField, IntegerField, FileField, validators
 from wtforms.validators import InputRequired, Email, Length
+
 #user sign up 
 class SignupForm(Form):
 	account = SelectField('Account Type', choices =[('T','Tenant'), ('RM', 'Rental Manager')])
@@ -14,7 +15,17 @@ class SignupForm(Form):
 		validators.EqualTo('confirm',message ='Passwords do not match')
 		])
 	confirm = PasswordField('Confirm Password')
-
+#App throws an error that form requires a multidict type on passing request.method
+class ReportForm(Form):
+	report_type = SelectField(
+		choices =[("users","View all users in the system"),
+		("occupant","View all tenants"),
+		("units","View all units"),
+		("property",'View property report'),
+		('is_available','View vacant units'),
+		('occupied','View occupied units')])
+	from_date = DateTimeField('start from')
+	end_date = DateTimeField('End Date')
 class LoginForm(Form):
 	email = StringField('Email',[validators.Email(), validators.DataRequired()])
 	password = PasswordField('Password', [validators.DataRequired()])
@@ -66,7 +77,7 @@ class bookingForm(Form):
 class BillForm(Form): 
 	invoice_number = StringField ('Invoice Number', [validators.Length(min=1, max=50),
 		validators.DataRequired()])
-	invoive = FileField('Upload Invoice',[validators.DataRequired()])
+	invoice = FileField('Upload Invoice',[validators.DataRequired()])
 
 
 

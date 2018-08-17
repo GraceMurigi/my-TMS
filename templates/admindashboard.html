@@ -12,6 +12,21 @@
 	{% extends 'Adminlayout.html' %}
 
 	{% block body %}
+		<div class="report">
+			<form method="POST">
+ 			
+  <div class="form-group">
+    {{ form.report_type(placeholder = "Enter Email", class="input") }}
 
-
+  </div>
+ <div class="form-group">
+ 	<a href="/"><button class="button btn-success" >Generate PDF Report</button></a>
+ </div>
+  
+</form>
+		</div>
+		{% if data %}
+			
+		
+		{% endif %}
 	{% endblock %}

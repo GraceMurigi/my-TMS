@@ -1,0 +1,34 @@
+		
+			<table border="5" cellpadding="10" cellspacing="10" class="table table-bordred table-striped">
+<!-- 			<table class="table table-striped" style="color: #fff;">
+				 -->				
+				<tbody>
+
+
+                <tr>
+<!--               <th>Property ID</th>
+ -->              
+ 			  <th>Property Name</th>
+              <th>Property Address</th>
+              <th>Number of Units</th>
+              
+
+{% if data %}
+          </tr>
+				  {% for rows in data %}
+				    <tr>
+<!-- 				    	<td>{{rows['ren_id']}}</td>
+ -->				    <td>{{rows['name']}}</td>
+				      	<td>{{rows['address']}}</td>
+				      	<td>{{rows['units_managed']}}</td>
+				      
+
+
+				    </tr>
+				  {% endfor %}
+				  
+
+{% endif %}
+				</tbody>
+			</table>
+		

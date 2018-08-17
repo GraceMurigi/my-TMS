@@ -5,17 +5,19 @@
 												
 		{% if data %}
 				  {% for rows in data %}
-				    <div class="vacantunits">
-				    {{rows['unit_id']}}
+				    <div class="vacantunits" style="background-image: url(../static/images/uploads/unit_{{rows['unit_id']}}.jpg);">
+				    <div class="infor">
+				    unit id :{{rows['unit_id']}}
+				    <br>
 				    <!-- {{rows['unit_name']}} -->
-				    {{rows['features']}}
+				    unit feature: {{rows['features']}}
 				    <!-- {{rows['units_managed']}} -->
-				      
+				      </div>
 
 
-				<div class="vacant-buttons">
+				<div class="vacant-buttons" >
 						<!-- <a href="/viewunits/{{rows['id']}}" class="btn button-success">Book Unit</a> -->
-						<a href="/unitsform/{{rows['id']}}" class="btn button-success">View details</a>
+						
 
 						<a href="/bookunit/{{rows['unit_id']}}" class="btn button-success">Book Unit</a>
 
