@@ -3,7 +3,10 @@
 	{% block body %}
 
 
-			<table border="5" cellpadding="10" cellspacing="10" class="table table-bordred table-striped">
+		
+
+{% if data %}
+	<table border="5" cellpadding="10" cellspacing="10" class="table table-bordred table-striped" style="position: relative;">
 <!-- 			<table class="table table-striped" style="color: #fff;">
 				 -->				
 				<tbody>
@@ -18,10 +21,8 @@
               <th>User Email</th>
               <th>User Contacts</th>
              <th>Status</th>
-              
-
-{% if data %}
-          </tr>
+              </tr>
+          
 				  {% for rows in data %}
 				    <tr><!-- 
 				    	display unit_application.user_id, unit_application.unit_id, unit_application.id_proof_document, unit_application.id_proof_doc_no, unit_application.submit_date, units.unit_name, units.features, property.name, property.manager -->
@@ -32,7 +33,7 @@
 				      	<td>{{rows['id_proof_document']}}: {{rows['id_proof_doc_no']}}</td>
 				      	<td>{{rows['email']}}</td>
 				      	<td> +254{{rows['phone_number']}}</td>
-				      	<td>{{rows['status']}}</td>
+				      	<td id="status">{{rows['status']}}</td>
 
 				      	
 				      	
@@ -40,19 +41,26 @@
 				      
 
 
-				    <td>
-				<a href="/decline/{{rows['unit_id']}}" class="btn btn-warning" style="margin-bottom: 2px; font-size: 12px;">Decline</a>
+				    <td class="status">
+				<a href="/decline/{{rows['id_proof_doc_no']}}" class="btn btn-warning dis-decline" style="margin-bottom: 2px; font-size: 12px;">Decline</a>
 
-				<a href="/approve/{{rows['unit_id']}}" class="btn btn-success" style="font-size: 12px;">Approve</a>
+				<a href="/approve/{{rows['id_proof_doc_no']}}" class="btn btn-success approve" style="font-size: 12px;">Approve</a>
 
              
 
                     </td>
 				    </tr>
 				  {% endfor %}
-				  
-
+{% else %}				  
+	<div class="alert alert-success" style="position: relative; display: block;">You do not have any tenants registered in the system at this time</div>
 {% endif %}
 				</tbody>
 			</table>
+			<script type="text/javascript">
+				if ($('#status').text()=="accepted"){
+					$(".dis-decline").hide();
+					$(".approve").hide();
+					$('.status').text("")
+				}
+			</script>
 	{% endblock %}

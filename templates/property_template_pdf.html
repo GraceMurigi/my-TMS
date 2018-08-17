@@ -1,8 +1,3 @@
-{% extends 'RMlayout.html' %}
-
-{% block body %}
-
-					
 		
 			<table border="5" cellpadding="10" cellspacing="10" class="table table-bordred table-striped">
 <!-- 			<table class="table table-striped" style="color: #fff;">
@@ -29,15 +24,6 @@
 				      
 
 
-				    <td>
-				
-				<a href="/viewunits/{{rows['ren_id']}}" class="btn btn-success">View Units</a>
-
-				<a href="/unitsform/{{rows['ren_id']}}" class="btn btn-success">Add Units</a>
-
-                <a href="/deleteproperty/{{rows['id']}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?')"> <i class="fa fa-trash" aria-hidden="true"></i></a>
-
-                    </td>
 				    </tr>
 				  {% endfor %}
 				  
@@ -46,6 +32,3 @@
 				</tbody>
 			</table>
 		
-
-
-{% endblock%}

@@ -1,14 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, logging
 from passlib.hash import sha256_crypt
 from flask_mysqldb import MySQL
-from forms import SignupForm, LoginForm, maintenaceForm, propertyForm, unitsForm, ManagerForm, BillForm, bookingForm
+from forms import SignupForm, ReportForm, LoginForm, maintenaceForm, propertyForm, unitsForm, ManagerForm, BillForm, bookingForm
 #import flask_excel as excel
-
-
-
+from flask_weasyprint import HTML , render_pdf
+import os
+from werkzeug.utils import secure_filename
 app = Flask(__name__)
 #Bootstrap(app)
-
+#upload image deliberation
+UPLOAD_FOLDER = 'static/images/uploads/'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'pdf'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key ="Whatdoyouthink123"
 #configure mysql
 app.config['MYSQL_HOST'] = 'localhost'
@@ -17,9 +20,146 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'tenant_management'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-#initializing mysql
 mysql = MySQL(app)
+#function to check the file extension is a valid and allowed extension
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+#upload image
+@app.route('/upload/<target>', methods = ['GET', 'POST'])
+def upload(target):
+	if request.method == 'POST':
+		if 'file' not in request.files:
+			flash('No file part')
+			return redirect(request.url)
+		file = request.files['file']
+		# if user does not select file, browser also
+		# submit a empty part without filename
+		if file.filename == '':
+			flash('No selected file')
+			return redirect(request.url)
+		if file and allowed_file(file.filename):
+			filename = secure_filename(target+str('.jpg'))
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			flash("Successfully uploaded "+filename, "success")
+			#run query to save the image name or path to the database
+
+	return render_template('uploadimage.html')
+#Generating reports
+@app.route('/<name>_report.pdf')
+def generate_report(name):
+	if session.get('Admin'):
+	
+		try:
+			cur = mysql.connection.cursor()
+			print('no error')
+			if name == 'users' or name == 'property':
+				result = cur.execute("SELECT * FROM "+ name);
+			elif name == 'units':
+				result = cur.execute("SELECT units.*, property.name FROM "+ name +" INNER JOIN property ON units.property= property.ren_id")
+			elif name == "is_available":
+				print('working')
+				name = 'units'
+				result = cur.execute("SELECT units.*, property.name FROM units INNER JOIN property ON units.property= property.ren_id WHERE units.is_available = %s", ( 'Y',))
+			else:
+				cur.execute("SELECT * FROM "+ name )
+			if result > 0:
+				data = cur.fetchall()
+			
+		except Exception as e:
+			flash('No units to display')
+			print(e)
+			print('error somewhere')
+			
+		finally:
+			cur.close()	
+	elif session.get('RM'):
+		try:
+			cur = mysql.connection.cursor()
+			if name == 'property':
+				cur.execute("SELECT * FROM " +name+ " WHERE manager ='%s'", (session['user_id'], ));
+			elif name == 'occupant':
+				cur.execute("SELECT * FROM "+ name )
+			elif name == 'users':
+				data = False
+			else:
+				cur.execute("SELECT * FROM "+ name )
+			# if result > 0:
+			# 	flash("Yeepy some data exists")
+			data = cur.fetchall()
+			print (data)
+				# else:
+				# 	flash("Sorry, tenant manager data doesn't exist")
+
+		except Exception as e:
+			flash('Kindly add a property first')
+			print(e)
+			print('error somewhere')
+			
+		finally:
+			cur.close()
+		
+	    # Make a PDF straight from HTML in a string.
+	html = render_template(name+'_template_pdf.html', data = data)
+	return render_pdf(HTML(string=html))
+
+@app.route('/<name>_PDFreports')
+def report(name): 
+	if session.get('Admin'):
+	
+		try:
+			cur = mysql.connection.cursor()
+			
+			if name == 'users' or name == 'property':
+				result = cur.execute("SELECT * FROM "+ name);
+			elif name == 'units':
+				result = cur.execute("SELECT units.*, property.name FROM "+ name +" INNER JOIN property ON units.property= property.ren_id")
+			elif name == "is_available":
+				print('working')
+				result = cur.execute("SELECT units.*, property.name FROM units INNER JOIN property ON units.property= property.ren_id WHERE units.is_available = %s", ( name ,))
+			if result > 0:
+				flash("Yeepy some data exists")
+				data = cur.fetchall()
+			else:
+				cur.execute("SELECT * FROM "+ name )
+		except Exception as e:
+			flash('No units to display')
+			print(e)
+			print('error somewhere')
+			
+		finally:
+			cur.close()	
+	elif session.get('RM'):
+		try:
+			cur = mysql.connection.cursor()
+			if name == 'property':
+				cur.execute("SELECT * FROM " +name+ " WHERE manager ='%s'", (session['user_id'], ));
+			elif name == 'occupant':
+				cur.execute("SELECT * FROM "+ name )
+			elif name == 'users':
+				data = False
+			else:
+				cur.execute("SELECT * FROM "+ name )
+			# if result > 0:
+			# 	flash("Yeepy some data exists")
+			data = cur.fetchall()
+			print (data)
+				# else:
+				# 	flash("Sorry, tenant manager data doesn't exist")
+
+		except Exception as e:
+			flash('Kindly add a property first')
+			print(e)
+			print('error somewhere')
+			
+		finally:
+			cur.close()
+		
+	    # Make a PDF straight from HTML in a string.
+	return render_template(name+'_template_pdf.html', data = data)
+	
+	
 # The intro routes are home, about, contact us, signup and login 
 
 #home
@@ -63,7 +203,8 @@ def Signup():
 			mysql.connection.commit()
 			
 		except Exception as e:
-			flash( 'Signup error!: {}', format(e))
+			flash( 'Signup error!:'+str(e), "warning")
+			print(e)
 			return render_template('Signup.html', form = form)
 			
 		finally:
@@ -141,17 +282,27 @@ def Login():
 
 # how to access account and log out 
 # Dashboard route
-@app.route('/Dashboard')
+@app.route('/Dashboard', methods =['GET','POST'])
 def Dashboard():
-	if session.get('RM'):
-		return render_template('RMdashboard.html')
-	elif session.get('T'):
-		return render_template('Tdashboard.html')
-	elif session.get('Admin'):
-		return render_template('admindashboard.html')
-	else:
-		flash('Sorry, you need to log in first', 'warning')
-		return redirect(url_for('index'))
+	if session.get('user_id'):
+		form = ReportForm(request.form)
+		if request.method == 'GET':	
+			if session.get('RM'):
+				return render_template('RMdashboard.html')
+			elif session.get('T'):
+				return render_template('Tdashboard.html')
+			elif session.get('Admin'):
+				return render_template('admindashboard.html', form = form)
+		
+			flash('Sorry, you need to log in first', 'warning')
+			return redirect(url_for('index'))
+		elif request.method == 'POST':
+			name = form.report_type.data
+			end_date = form.end_date.data
+			from_date = form.from_date.data
+			flash(str(name))
+			return redirect(url_for('generate_report', name = name))
+
 	flash("You are not logged in, Kindly log in first", 'danger')
 	return redirect(url_for('index'))
 
@@ -235,6 +386,7 @@ def myProperty():
 			return render_template('propertylist.html', data = data)
 	return redirect(url_for('Login'))
 
+
 #add unit 
 @app.route('/unitsform/<ren_id>', methods=['GET', 'POST'])
 def addUnits(ren_id):
@@ -281,7 +433,7 @@ def viewUnits(ren_id):
 			result = cur.execute("SELECT * FROM units WHERE property = %s", (ren_id, ))
 
 			if result > 0:
-				flash("Yeepy some data exists")
+				
 				data = cur.fetchall()
 			else:
 				flash("Sorry no data for the manager")
@@ -313,7 +465,7 @@ def unit_applicants():
 				# 	flash("Sorry, tenant manager data doesn't exist")
 
 		except Exception as e:
-			flash('Kindly add a property first')
+			flash('Sorry an error occured, kindly contact your system admin')
 			print(e)
 			print('error somewhere')
 			
@@ -533,14 +685,15 @@ def UnitBooking(unit_id):
 				#close connection
 
 			except Exception as e:
-				flash("Sorry, please fill in all fields", "warning")
+				flash("Sorry, You already applied for a unit", "warning")
 				print("error")
 				print(e)
 		
 			finally:
 				cur.close()
 			return(redirect(url_for('Dashboard')))
-	return render_template('booking.html', form=form, unit_id = unit_id)
+
+	return redirect(url_for('Signup'))
 
 #approve a vacant unit application
 @app.route('/approve/<int:id>')
@@ -550,7 +703,7 @@ def respond(id):
 		cur = mysql.connection.cursor()
 		try:
 		# Execute query
-			cur.execute("UPDATE unit_application SET status = 'accepted' WHERE id = %s", (id, ));
+			cur.execute("UPDATE unit_application SET status = 'accepted' WHERE id_proof_doc_no = %s", (id, ));
 			cur.execute("INSERT INTO occupant (user_id, unit_id) VALUES (%s,%s)", (session.get('user_id'), id));
 			print("working")
 		#commit to the database
@@ -576,7 +729,7 @@ def decline(id):
 		cur = mysql.connection.cursor()
 		try:
 		# Execute query
-			cur.execute("UPDATE unit_application SET status = 'rejected' WHERE id = %s", (id, ))
+			cur.execute("UPDATE unit_application SET status = 'rejected' WHERE id_proof_doc_no = %s", (id, ))
 
 			print("working")
 		#commit to the database
@@ -617,8 +770,9 @@ def Managers():
 @app.route('/tenants', methods=['GET', 'POST'])
 def Tenants():
 	cur = mysql.connection.cursor()
-	# cur.execute("SELECT occupant.*, units.property, property.ren_id FROM occupant, property INNER JOIN units on units.property=property.ren_id WHERE property.manager = %s ", (session.get('user_id'), ) )
-	cur.execute ("SELECT * FROM occupant")
+
+	cur.execute("SELECT users.first_name, units.unit_name, property.name, occupant.user_id, u2.first_name, u2.last_name, u2.email, u2.phone_number FROM users INNER JOIN property ON users.user_id = property.manager INNER JOIN units ON property.ren_id = units.property INNER JOIN occupant ON occupant.unit_id =units.unit_id INNER JOIN users u2 ON u2.user_id=occupant.user_id WHERE users.user_id =%s ", (session.get('user_id'), ) )
+
 	data = cur.fetchall()
 	cur.close()
 	return render_template('users.html', data= data)
@@ -631,6 +785,8 @@ def delete(user_id):
     cur.execute("DELETE FROM users WHERE id=%s", (user_id,))
     mysql.connection.commit()
     return redirect(url_for('Index'))
-
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 if __name__=="__main__":
 	app.run(debug=True)

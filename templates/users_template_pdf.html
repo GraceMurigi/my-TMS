@@ -1,0 +1,46 @@
+
+
+<table border="5" cellpadding="10" cellspacing="10" class="table table-bordred table-striped">
+<!-- 			<table class="table table-striped" style="color: #fff;">
+				 -->				
+				<tbody>
+
+
+                <tr>
+<!--               <th>Property ID</th>
+ -->              
+ 			  <th>Acc Type</th>
+              <th>User Name</th>
+              <th>User Email</th>
+              <th>User Phone Number</th>	
+
+              
+
+{% if data %}
+          </tr>
+				  {% for rows in data %}
+				    <tr>
+<!-- 				    	<td>{{rows['ren_id']}}</td>
+
+ -->				    <td>{{rows['account']}}</td>
+ 						<td>{{rows['first_name']}}  {{rows['last_name']}}</td>
+				      	<td>{{rows['email']}}</td>
+				      	<td>+254{{rows['phone_number']}}</td>
+				     
+				      
+
+
+				    </tr>
+				  {% endfor %}
+				{% else %}  
+				<p class="alert alert-success">You do not have priviledges to view these users</p>
+
+{% endif %}
+				</tbody>
+			</table>
+			<a href="/users_report.pdf">
+				<button class="btn-success">
+					Generate PDF report
+				</button>
+			</a>
+		

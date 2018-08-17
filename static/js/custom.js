@@ -9,12 +9,24 @@
                 $("nav.navbar").removeClass("navbar-shrink");
                 $(".navbar-brand").css({
                     "color": "#fff"
-                });
+                 });
                 $(".navbar-dark .navbar-toggler").css({"background-color" : "transparent"});
                 
             }
         });
-
+$.datepicker.setDefaults({
+  showOn: "both",
+  buttonImageOnly: true,
+  buttonImage: "calendar.gif",
+  buttonText: "Calendar"
+});
+$.datepicker.setDefaults( $.datepicker.regional[ "en" ] );
+$.datepicker.formatDate( "DD, MM d, yy", new Date( 2007, 7 - 1, 14 ), {
+  dayNamesShort: $.datepicker.regional[ "fr" ].dayNamesShort,
+  dayNames: $.datepicker.regional[ "fr" ].dayNames,
+  monthNamesShort: $.datepicker.regional[ "fr" ].monthNamesShort,
+  monthNames: $.datepicker.regional[ "fr" ].monthNames
+});
         $(document).ready(function() {
 
             $(function() {
