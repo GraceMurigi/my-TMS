@@ -1,34 +1,61 @@
-<section class="cd-faq">
-   <ul class="cd-faq-categories">
-      <li><a href="#basics">Basics</a></li>
-      <li><a href="#mobile">Mobile</a></li>
-      <li><!-- ... --></li>
-   </ul>
 
-   <div class="cd-faq-items">
-      <ul id="basics" class="cd-faq-group">
-         <li class="cd-faq-title"><h2>Basics</h2></li>
-         <li>
-            <a class="cd-faq-trigger" href="#0">How do I change my password?</a>
-            <div class="cd-faq-content">
-               <!-- content here -->
-            </div> 
-         </li>
+{% extends 'layout.html' %}
 
-         <li>
-            <a class="cd-faq-trigger" href="#0">How do I sign up?</a>
-            <div class="cd-faq-content">
-               <!-- content here -->
-            </div> 
-         </li>
+{% block body %}   
 
-         <li><!-- ... --></li>
-      </ul>
+<h1 class="quick">Quick Guide</h1>
 
-      <ul id="mobile" class="cd-faq-group">
-         <!-- ... -->
+   <section class="cd-faq">
+
+      <ul class="cd-faq-categories">
+         <li><a class="selected" href="#basics">Getting Started</a></li>
+         <li><a href="#mobile">Listing Properties</a></li>
+         <li><a href="#account">Renting a listed property</a></li>
+         
+        
       </ul> 
+      <div class="cd-faq-items">
+         <ul id="basics" class="cd-faq-group">
+            <li class="cd-faq-title"><h2> Getting Started</h2></li>
+            <li>
+               <a class="cd-faq-trigger" href="#0">How do I register for an account?</a>
+               <div class="cd-faq-content">
+                  <p> For a rental managemer account, click on the Rental Manager icon on the home page
+                     <br>
+                     For a tenant account, click on the Tenant icon on the home page
+                  </p>
+               </div> <!-- cd-faq-content -->
+            </li>
 
-      <!-- ... -->
-   </div> 
-</section>
+           
+         </ul> <!-- cd-faq-group -->
+
+         <ul id="mobile" class="cd-faq-group">
+            <li class="cd-faq-title"><h2>Listing Properties</h2></li>
+            <li>
+               <a class="cd-faq-trigger" href="#0">How do I list my properties?</a>
+               <div class="cd-faq-content">
+                  <p> First, register for Rental Manager account  and log in. From your dashboard, add your properties. All vacant properties/units will be automatically listed in the 'to let' section</p>
+               </div> <!-- cd-faq-content -->
+            </li>
+
+            
+         </ul> <!-- cd-faq-group -->
+
+         <ul id="account" class="cd-faq-group">
+            <li class="cd-faq-title"><h2>Renting a listed property</h2></li>
+            <li>
+               <a class="cd-faq-trigger" href="#0">How do i book a vacant unit?</a>
+               <div class="cd-faq-content">
+                  <p>Register for a tenant account and log in. From your dashboard click on "To Let" and book the unit of your choice</p>
+               </div> <!-- cd-faq-content -->
+            </li>
+
+
+            
+         </ul> <!-- cd-faq-group -->
+      </div> <!-- cd-faq-items -->
+      <a href="#0" class="cd-close-panel">Close</a>
+   </section> <!-- cd-faq -->
+
+{% endblock %}

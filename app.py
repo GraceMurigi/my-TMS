@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.secret_key ="Whatdoyouthink123"
 #configure mysql
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'griffin'
+app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'tenant_management'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
@@ -323,14 +323,17 @@ def unit_applicants():
 	return redirect(url_for('Login'))
 
 #view maintenance requests 
-@app.route('/viewrequests')
+@app.route('/viewrequests', methods=['GET', 'POST'])
 def viewRequests():
+	if session.get('user_id'):
+		
+		cur = mysql.connection.cursor()
+			# cur.excecute ("SELECT * FROM maintenance_requests INNER JOIN users ON maintenance_requests.requester=users.user_id INNER JOIN occupant" )
+		cur.execute("SELECT * FROM maintenance_requests")
 
-	cur = mysql.connection.cursor()
-	# cur.execute("SELECT * FROM maintenance SELECT ten_id FROM maintenance m INNER JOIN tenant t ON " )
-	data = cur.fetchall()
-	cur.close()
-
+		data=cur.fetchall()
+		cur.close()
+			
 
 	return render_template('request.html', data = data)
 
@@ -430,39 +433,39 @@ def paymentLog(id):
 
 #routes to navigate the tenant dashboard 
 #request for maintenance 
-@app.route('/maintenance')
+@app.route('/maintenance', methods=['GET', 'POST'])
 def maintenance():
-	# if session.get('T')
-	form = maintenaceForm(request.form)
-	if request.method == 'POST' and form.validate():
-		maintenance = form.maintenance.data 
-		description = form.description.data
-	
-		try:
-			#create cursor
-			cur = mysql.connection.cursor()
+	if session.get('user_id'):
+		form = maintenaceForm(request.form)
+		if request.method == 'POST' and form.validate():
+			maintenance = form.maintenance.data 
+			description = form.description.data
+		
+			try:
+				#create cursor
+				cur = mysql.connection.cursor()
+				
+				# Execute query
+				cur.execute("INSERT INTO maintenance_requests (type, description, requester) VALUES (%s,%s, %s)",
+					(maintenance, description, session['user_id'] ))
+
+				print("working")
+				#commit to the database
+				mysql.connection.commit()
+				flash('Maintenace request sent!', 'success')
+				#close connection
+
+			except Exception as e:
+				flash("Sorry, please fill out all the fields", "warning")
+				print("error")
+				print(e)
 			
-			# Execute query
-			cur.execute("INSERT INTO maintenance_requests (type, description) VALUES (%s, %s)",
-				(maintenance, description))
+			finally:
+				cur.close()
+			
+			return redirect(url_for('Dashboard'))
 
-			print("working")
-			#commit to the database
-			mysql.connection.commit()
-			flash('Maintenace request sent!', 'success')
-			#close connection
-
-		except Exception as e:
-			flash("Sorry, please fill in all fields", "warning")
-			print("error")
-			print(e)
-		
-		finally:
-			cur.close()
-		
-		return redirect(url_for('Dashboard'))
-
-	return render_template('maintenance.html', form=form)
+		return render_template('maintenance.html', form=form)
 
 #view pending bills 
 @app.route('/pendingbills')
@@ -614,7 +617,8 @@ def Managers():
 @app.route('/tenants', methods=['GET', 'POST'])
 def Tenants():
 	cur = mysql.connection.cursor()
-	cur.execute("SELECT occupant.*, units.property, property.ren_id FROM occupant, property INNER JOIN units on units.property=property.ren_id WHERE property.manager = %s ", (session.get('user_id'), ) )
+	# cur.execute("SELECT occupant.*, units.property, property.ren_id FROM occupant, property INNER JOIN units on units.property=property.ren_id WHERE property.manager = %s ", (session.get('user_id'), ) )
+	cur.execute ("SELECT * FROM occupant")
 	data = cur.fetchall()
 	cur.close()
 	return render_template('users.html', data= data)
