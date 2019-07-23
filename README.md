@@ -1,6 +1,4 @@
-# RentalManagement
-This is a flask project on Rental Management
+A tenant/rentals management app written in flask. Part of a school project asssignment.
 
-the database 
-user 1 is a tenant 
-user 2 is a RM 
+
+
